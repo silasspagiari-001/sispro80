@@ -1,0 +1,44 @@
+unit untCadPROBABILIDADE;
+
+interface
+
+uses untDM_RC, Vcl.Menus, uniMainMenu, uniSweetAlert, uniDateTimePicker,
+ 
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, untFrmCRUDproprio, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uniHTMLFrame,
+  uniBasicGrid, uniDBGrid, uniMultiItem, uniComboBox, uniGUIClasses, uniEdit,
+  uniLabel, uniScrollBox, uniPanel, uniPageControl, uniButton, uniBitBtn,
+  uniGUIBaseClasses, uniCheckBox, uniDBCheckBox, uniDBEdit;
+
+type
+  TfrmCADPROBABILIDADE = class(TfrmCRUDPROPRIO)
+    rcBlock10: TUniContainerPanel;
+    rcBlock20: TUniContainerPanel;
+    rcBlock30: TUniContainerPanel;
+    rcBlock40: TUniContainerPanel;
+    edCodigo: TUniDBEdit;
+    UniLabel3: TUniLabel;
+    UniLabel4: TUniLabel;
+    UniDBCheckBox1: TUniDBCheckBox;
+    UniLabel5: TUniLabel;
+    UniLabel6: TUniLabel;
+    UniDBFormattedNumberEdit1: TUniDBFormattedNumberEdit;
+    UniDBFormattedNumberEdit2: TUniDBFormattedNumberEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCADPROBABILIDADE: TfrmCADPROBABILIDADE;
+
+implementation
+
+{$R *.dfm}
+initialization
+  RegisterClass(TfrmCADPROBABILIDADE);
+end.
