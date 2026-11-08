@@ -1,0 +1,28 @@
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+ULTIMO CODIGO [FireDAC][Phys][FB]invalid request BLR at offset 72
+generator GEN_RASTREIO_ID is not defined
+Access violation at address 00000000035AA558 in module 'Sispro_80.exe' (offset 263A558). Read of address 0000000000000000
+External exception EEDFAE1
+[FireDAC][Phys][FB]Dynamic SQL Error
+SQL error code = -206
+Column unknown
+PESSOAS.IBGE
+At line 1, column 8
+Access violation at address 0000000002FA32A9 in module 'Sispro_80.exe' (offset 27032A9). Read of address 0000000000000000
+Cannot perform this operation on a closed dataset
+Cannot perform this operation on a closed dataset
+Cannot perform this operation on a closed dataset
+Cannot perform this operation on a closed dataset
+Cannot perform this operation on a closed dataset
+Cannot perform this operation on a closed dataset
