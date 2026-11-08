@@ -1,0 +1,2519 @@
+inherited frmMANIFESTOS: TfrmMANIFESTOS
+  OnCreate = ManifestoCreate
+  inherited paBaseBackGround: TUniContainerPanel
+    inherited paBaseTop: TUniContainerPanel
+      inherited paBaseTopTitle: TUniContainerPanel
+        inherited btnQuickSearch: TUniBitBtn
+          ScreenMask.Target = Owner
+        end
+      end
+    end
+    inherited paBaseButtons: TUniContainerPanel
+      ScrollHeight = 988
+      ScrollWidth = 37
+      inherited paNAE: TUniContainerPanel
+        inherited btnEditReg: TUniBitBtn
+          ScreenMask.Target = Owner
+        end
+      end
+      inherited paGC: TUniContainerPanel
+        inherited btnSaveReg: TUniBitBtn
+          ScreenMask.Target = Owner
+        end
+        inherited btnCancelReg: TUniBitBtn
+          ScreenMask.Target = Owner
+        end
+      end
+    end
+    inherited paBaseCadControl: TUniContainerPanel
+      inherited pgBaseCadControl: TUniPageControl
+        ActivePage = tabRegister
+        inherited tabSearch: TUniTabSheet
+          ExplicitTop = 24
+          ExplicitHeight = 965
+          inherited paBaseRegSearch: TUniContainerPanel
+            Height = 965
+            ExplicitHeight = 965
+            inherited paGridOffset: TUniContainerPanel
+              Height = 957
+              ExplicitHeight = 957
+              inherited dbgSearchCRUD: TUniDBGrid
+                Height = 957
+                Columns = <
+                  item
+                    AllowHTML = False
+                    FieldName = 'NUMERO'
+                    Title.Caption = 'Numero'
+                    Width = 90
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'SERIE'
+                    Title.Caption = 'Serie'
+                    Width = 60
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'EMISSAO'
+                    Title.Caption = 'Emissao'
+                    Width = 110
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'NOMETRANSPORTADORA'
+                    Title.Caption = 'Transportador'
+                    Width = 280
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'PLACATRATOR'
+                    Title.Caption = 'Placa'
+                    Width = 100
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'ESTADOINI'
+                    Title.Caption = 'Origem'
+                    Width = 65
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'ESTADOFIN'
+                    Title.Caption = 'Destino'
+                    Width = 65
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    FieldName = 'CANCELADA'
+                    Title.Caption = 'Situacao'
+                    Width = 85
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'TOTAL'
+                    Title.Caption = 'Valor'
+                    Width = 120
+                    Font.Name = 'Calibri'
+                  end
+                  item
+                    AllowHTML = False
+                    FieldName = 'CODIGO'
+                    Title.Caption = 'Codigo'
+                    Width = 80
+                    Font.Name = 'Calibri'
+                  end>
+              end
+            end
+          end
+        end
+        inherited tabRegister: TUniTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 24
+          ExplicitWidth = 1361
+          ExplicitHeight = 965
+          inherited paBaseRegData1: TUniContainerPanel
+            ScrollHeight = 965
+            ScrollWidth = 1361
+            object paFiscal: TUniContainerPanel
+              Left = 0
+              Top = 0
+              Width = 1361
+              Height = 46
+              Hint = ''
+              ParentColor = False
+              Align = alTop
+              TabOrder = 0
+              object btSefaz: TUniButton
+                Left = 8
+                Top = 6
+                Width = 155
+                Height = 32
+                Hint = ''
+                Caption = 'SEFAZ / DAMDFE'
+                TabOrder = 0
+                OnClick = SefazClick
+              end
+              object btBuscarTransportador: TUniButton
+                Left = 172
+                Top = 6
+                Width = 180
+                Height = 32
+                Hint = ''
+                Caption = 'Pesquisar transportador'
+                TabOrder = 1
+                OnClick = BuscarTransportadorClick
+              end
+            end
+            object pgComplementData: TUniPageControl
+              Left = 0
+              Top = 46
+              Width = 1361
+              Height = 919
+              Hint = ''
+              ActivePage = tabVeiculos
+              Align = alClient
+              TabOrder = 1
+              object tabGeral: TUniTabSheet
+                Hint = ''
+                Caption = 'Dados gerais'
+                object scGeral: TUniScrollBox
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 889
+                  Hint = ''
+                  Align = alClient
+                  TabOrder = 0
+                  ScrollHeight = 1255
+                  ScrollWidth = 960
+                  object rcBlock10: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 70
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 0
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCODIGO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 79
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Codigo interno'
+                      TabOrder = 2
+                    end
+                    object edCODIGO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CODIGO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock20: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 140
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 1
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNUMERO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 135
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Numero (gerado ao salvar)'
+                      TabOrder = 2
+                    end
+                    object edNUMERO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NUMERO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock30: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 210
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 2
+                    DesignSize = (
+                      235
+                      65)
+                    object lbDOCUMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 154
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Documento MDF-e no SISPRO'
+                      TabOrder = 2
+                    end
+                    object edDOCUMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'DOCUMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock40: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 280
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 3
+                    DesignSize = (
+                      235
+                      65)
+                    object lbSERIE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 25
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Serie'
+                      TabOrder = 2
+                    end
+                    object edSERIE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'SERIE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock50: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 350
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 4
+                    DesignSize = (
+                      235
+                      65)
+                    object lbEMISSAO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 41
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Emissao'
+                      TabOrder = 2
+                    end
+                    object edEMISSAO: TUniDBDateTimePicker
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'EMISSAO'
+                      DataSource = dsMaster
+                      DateTime = 46283.000000000000000000
+                      DateFormat = 'dd/MM/yyyy'
+                      TimeFormat = 'HH:mm:ss'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock60: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 420
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 5
+                    DesignSize = (
+                      235
+                      65)
+                    object lbHORAEMISSAO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 85
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Hora de emissao'
+                      TabOrder = 2
+                    end
+                    object edHORAEMISSAO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'HORAEMISSAO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock70: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 490
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 6
+                    DesignSize = (
+                      235
+                      65)
+                    object lbTRANSPORTADORA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 113
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Codigo transportador'
+                      TabOrder = 2
+                    end
+                    object edTRANSPORTADORA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'TRANSPORTADORA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock80: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 560
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 7
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNOMETRANSPORTADORA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 163
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Nome transportador / condutor'
+                      TabOrder = 2
+                    end
+                    object edNOMETRANSPORTADORA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NOMETRANSPORTADORA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock90: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 630
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 8
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCPFCNPJ: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 122
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CPF/CNPJ transportador'
+                      TabOrder = 2
+                    end
+                    object edCPFCNPJ: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CPFCNPJ'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock100: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 700
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 9
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNOMECONDUTOR: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 98
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Nome do condutor'
+                      TabOrder = 2
+                    end
+                    object edNOMECONDUTOR: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NOMECONDUTOR'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock110: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 770
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 10
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCPFCONDUTOR: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 70
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CPF condutor'
+                      TabOrder = 2
+                    end
+                    object edCPFCONDUTOR: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CPFCONDUTOR'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock120: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 840
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 11
+                    DesignSize = (
+                      235
+                      65)
+                    object lbAJUDANTE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 47
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Ajudante'
+                      TabOrder = 2
+                    end
+                    object edAJUDANTE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'AJUDANTE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock130: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 910
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 12
+                    DesignSize = (
+                      235
+                      65)
+                    object lbRNTC: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 35
+                      Height = 13
+                      Hint = ''
+                      Caption = 'RNTRC'
+                      TabOrder = 2
+                    end
+                    object edRNTC: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'RNTC'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock140: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 980
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 13
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCIOT: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 25
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CIOT'
+                      TabOrder = 2
+                    end
+                    object edCIOT: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CIOT'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock150: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1050
+                    Width = 960
+                    Height = 110
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 14
+                    DesignSize = (
+                      960
+                      110)
+                    object edTIPOEMITENTE: TUniDBRadioGroup
+                      Left = 4
+                      Top = 0
+                      Width = 940
+                      Height = 105
+                      Hint = ''
+                      DataField = 'TIPOEMITENTE'
+                      DataSource = dsMaster
+                      Caption = 'Tipo de emitente'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 1
+                      Items.Strings = (
+                        'Transportadora'
+                        'Carga propria')
+                      Columns = 2
+                      Values.Strings = (
+                        '0'
+                        '1')
+                    end
+                  end
+                  object rcBlock160: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1120
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 15
+                    DesignSize = (
+                      235
+                      65)
+                    object lbVLRCONTRATADO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 86
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Valor contratado'
+                      TabOrder = 2
+                    end
+                    object edVLRCONTRATADO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'VLRCONTRATADO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock170: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1190
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 16
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCANCELADA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 93
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Situacao (N/A/E/C)'
+                      TabOrder = 2
+                    end
+                    object edCANCELADA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CANCELADA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                end
+              end
+              object tabVeiculos: TUniTabSheet
+                Hint = ''
+                Caption = 'Veiculos'
+                object scVeiculos: TUniScrollBox
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 889
+                  Hint = ''
+                  Align = alClient
+                  TabOrder = 0
+                  ScrollHeight = 2770
+                  ScrollWidth = 960
+                  object rcBlock180: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1260
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 14
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPLACATRATOR: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 61
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Placa tracao'
+                      TabOrder = 2
+                    end
+                    object edPLACATRATOR: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PLACATRATOR'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock190: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1330
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 16
+                    DesignSize = (
+                      235
+                      65)
+                    object lbESTADOTRATOR: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 49
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF tracao'
+                      TabOrder = 2
+                    end
+                    object edESTADOTRATOR: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'ESTADOTRATOR'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock200: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1400
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 18
+                    DesignSize = (
+                      235
+                      65)
+                    object lbRENAVAM: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 85
+                      Height = 13
+                      Hint = ''
+                      Caption = 'RENAVAM tracao'
+                      TabOrder = 2
+                    end
+                    object edRENAVAM: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'RENAVAM'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock210: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1470
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 20
+                    DesignSize = (
+                      235
+                      65)
+                    object lbTRATORTARA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 78
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Tara tracao (kg)'
+                      TabOrder = 2
+                    end
+                    object edTRATORTARA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'TRATORTARA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock220: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1540
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 0
+                    DesignSize = (
+                      235
+                      65)
+                    object lbTRATORKG: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 117
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade tracao (kg)'
+                      TabOrder = 2
+                    end
+                    object edTRATORKG: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'TRATORKG'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock230: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1610
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 1
+                    DesignSize = (
+                      235
+                      65)
+                    object lbTRATORM3: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 119
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade tracao (m3)'
+                      TabOrder = 2
+                    end
+                    object edTRATORM3: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'TRATORM3'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock240: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1680
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 2
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPLACACARRETA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 64
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Placa carreta'
+                      TabOrder = 2
+                    end
+                    object edPLACACARRETA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PLACACARRETA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock250: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1750
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 3
+                    DesignSize = (
+                      235
+                      65)
+                    object lbESTADOCARRETA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 52
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF carreta'
+                      TabOrder = 2
+                    end
+                    object edESTADOCARRETA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'ESTADOCARRETA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock260: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1820
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 4
+                    DesignSize = (
+                      235
+                      65)
+                    object lbRENAVAMCARRETA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 88
+                      Height = 13
+                      Hint = ''
+                      Caption = 'RENAVAM carreta'
+                      TabOrder = 2
+                    end
+                    object edRENAVAMCARRETA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'RENAVAMCARRETA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock270: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1890
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 5
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCARRETATARA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 81
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Tara carreta (kg)'
+                      TabOrder = 2
+                    end
+                    object edCARRETATARA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CARRETATARA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock280: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 1960
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 6
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCARRETAKG: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 120
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade carreta (kg)'
+                      TabOrder = 2
+                    end
+                    object edCARRETAKG: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CARRETAKG'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock290: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2030
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 7
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCARRETAM3: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 122
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade carreta (m3)'
+                      TabOrder = 2
+                    end
+                    object edCARRETAM3: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CARRETAM3'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock300: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2100
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 8
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPLACAREBOQUE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 73
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Placa reboque'
+                      TabOrder = 2
+                    end
+                    object edPLACAREBOQUE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PLACAREBOQUE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock310: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2170
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 9
+                    DesignSize = (
+                      235
+                      65)
+                    object lbESTADOREBOQUE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 61
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF reboque'
+                      TabOrder = 2
+                    end
+                    object edESTADOREBOQUE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'ESTADOREBOQUE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock320: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2240
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 10
+                    DesignSize = (
+                      235
+                      65)
+                    object lbRENAVAMREBOQUE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 97
+                      Height = 13
+                      Hint = ''
+                      Caption = 'RENAVAM reboque'
+                      TabOrder = 2
+                    end
+                    object edRENAVAMREBOQUE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'RENAVAMREBOQUE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock330: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2310
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 11
+                    DesignSize = (
+                      235
+                      65)
+                    object lbREBOQUETARA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 90
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Tara reboque (kg)'
+                      TabOrder = 2
+                    end
+                    object edREBOQUETARA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'REBOQUETARA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock340: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2380
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 12
+                    DesignSize = (
+                      235
+                      65)
+                    object lbREBOQUEKG: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 129
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade reboque (kg)'
+                      TabOrder = 2
+                    end
+                    object edREBOQUEKG: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'REBOQUEKG'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock350: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2450
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 13
+                    DesignSize = (
+                      235
+                      65)
+                    object lbREBOQUEM3: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 131
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Capacidade reboque (m3)'
+                      TabOrder = 2
+                    end
+                    object edREBOQUEM3: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'REBOQUEM3'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock360: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2520
+                    Width = 960
+                    Height = 119
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 15
+                    DesignSize = (
+                      960
+                      119)
+                    object edTIPOVEICULO: TUniDBRadioGroup
+                      Left = 4
+                      Top = 0
+                      Width = 940
+                      Height = 114
+                      Hint = ''
+                      DataField = 'TIPOVEICULO'
+                      DataSource = dsMaster
+                      Caption = 'Tipo do veiculo'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 1
+                      Items.Strings = (
+                        'Truck'
+                        'Toco'
+                        'Cavalo mecanico'
+                        'Van'
+                        'Utilitario'
+                        'Outros')
+                      Columns = 2
+                      Values.Strings = (
+                        '0'
+                        '1'
+                        '2'
+                        '3'
+                        '4'
+                        '5')
+                    end
+                  end
+                  object rcBlock370: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2590
+                    Width = 960
+                    Height = 119
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 17
+                    DesignSize = (
+                      960
+                      119)
+                    object edTIPOCARROCERIA: TUniDBRadioGroup
+                      Left = 4
+                      Top = 0
+                      Width = 940
+                      Height = 114
+                      Hint = ''
+                      DataField = 'TIPOCARROCERIA'
+                      DataSource = dsMaster
+                      Caption = 'Carroceria'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 1
+                      Items.Strings = (
+                        'Aberta'
+                        'Fechada'
+                        'Graneleira'
+                        'Porta container'
+                        'Sider')
+                      Columns = 2
+                      Values.Strings = (
+                        '0'
+                        '1'
+                        '2'
+                        '3'
+                        '4')
+                    end
+                  end
+                  object rcBlock380: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2660
+                    Width = 960
+                    Height = 110
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 19
+                    DesignSize = (
+                      960
+                      110)
+                    object edTIPOCARGA: TUniDBRadioGroup
+                      Left = 4
+                      Top = 0
+                      Width = 940
+                      Height = 105
+                      Hint = ''
+                      DataField = 'TIPOCARGA'
+                      DataSource = dsMaster
+                      Caption = 'Acondicionamento da carga'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 1
+                      Items.Strings = (
+                        'Sacos'
+                        'Bags'
+                        'Graos'
+                        'Pecas')
+                      Columns = 2
+                      Values.Strings = (
+                        '0'
+                        '1'
+                        '2'
+                        '3')
+                    end
+                  end
+                end
+              end
+              object tabPercurso: TUniTabSheet
+                Hint = ''
+                Caption = 'Percurso e municipios'
+                object scPercurso: TUniScrollBox
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 889
+                  Hint = ''
+                  Align = alClient
+                  TabOrder = 0
+                  ScrollHeight = 3285
+                  ScrollWidth = 235
+                  object rcBlock390: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2730
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 0
+                    DesignSize = (
+                      235
+                      65)
+                    object lbESTADOINI: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 47
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF inicial'
+                      TabOrder = 2
+                    end
+                    object edESTADOINI: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'ESTADOINI'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock400: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2800
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 1
+                    DesignSize = (
+                      235
+                      65)
+                    object lbESTADOFIN: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 40
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF final'
+                      TabOrder = 2
+                    end
+                    object edESTADOFIN: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'ESTADOFIN'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock410: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2870
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 2
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPERCURSO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 201
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UFs do percurso, separadas por virgula'
+                      TabOrder = 2
+                    end
+                    object edPERCURSO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PERCURSO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock420: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 2940
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 3
+                    DesignSize = (
+                      235
+                      65)
+                    object lbIBGECARREGAMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 97
+                      Height = 13
+                      Hint = ''
+                      Caption = 'IBGE carregamento'
+                      TabOrder = 2
+                    end
+                    object edIBGECARREGAMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'IBGECARREGAMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock430: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3010
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 4
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCIDADECARREGAMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 126
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Municipio carregamento'
+                      TabOrder = 2
+                    end
+                    object edCIDADECARREGAMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CIDADECARREGAMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock440: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3080
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 5
+                    DesignSize = (
+                      235
+                      65)
+                    object lbUFCARRREGAMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 88
+                      Height = 13
+                      Hint = ''
+                      Caption = 'UF carregamento'
+                      TabOrder = 2
+                    end
+                    object edUFCARRREGAMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'UFCARRREGAMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock450: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3150
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 6
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCEP_CARREGAMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 93
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CEP carregamento'
+                      TabOrder = 2
+                    end
+                    object edCEP_CARREGAMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CEP_CARREGAMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock460: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3220
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 7
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCEP_DESTINO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 61
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CEP destino'
+                      TabOrder = 2
+                    end
+                    object edCEP_DESTINO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CEP_DESTINO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                end
+              end
+              object tabSeguro: TUniTabSheet
+                Hint = ''
+                Caption = 'Seguro'
+                object scSeguro: TUniScrollBox
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 889
+                  Hint = ''
+                  Align = alClient
+                  TabOrder = 0
+                  ScrollHeight = 3565
+                  ScrollWidth = 235
+                  object rcBlock470: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3290
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 0
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNOMESEGURADORA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 60
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Seguradora'
+                      TabOrder = 2
+                    end
+                    object edNOMESEGURADORA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NOMESEGURADORA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock480: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3360
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 1
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCNPJSEGURADORA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 86
+                      Height = 13
+                      Hint = ''
+                      Caption = 'CNPJ seguradora'
+                      TabOrder = 2
+                    end
+                    object edCNPJSEGURADORA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CNPJSEGURADORA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock490: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3430
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 2
+                    DesignSize = (
+                      235
+                      65)
+                    object lbAPOLICE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 38
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Apolice'
+                      TabOrder = 2
+                    end
+                    object edAPOLICE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'APOLICE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock500: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3500
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 3
+                    DesignSize = (
+                      235
+                      65)
+                    object lbAVERBACAO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 53
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Averbacao'
+                      TabOrder = 2
+                    end
+                    object edAVERBACAO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'AVERBACAO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                end
+              end
+              object tabDocumentos: TUniTabSheet
+                Hint = ''
+                Caption = 'Documentos vinculados'
+                object paItensAcoes: TUniContainerPanel
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 82
+                  Hint = ''
+                  ParentColor = False
+                  Align = alTop
+                  TabOrder = 0
+                  object lbCodigoNF: TUniLabel
+                    Left = 8
+                    Top = 4
+                    Width = 180
+                    Height = 13
+                    Hint = ''
+                    Caption = 'Codigo interno da NF-e autorizada'
+                    TabOrder = 5
+                  end
+                  object edCodigoNF: TUniEdit
+                    Left = 8
+                    Top = 28
+                    Width = 130
+                    Height = 30
+                    Hint = ''
+                    Text = ''
+                    TabOrder = 0
+                  end
+                  object btImportarNF: TUniButton
+                    Left = 146
+                    Top = 28
+                    Width = 160
+                    Height = 30
+                    Hint = ''
+                    Caption = 'Incluir NF-e do sistema'
+                    TabOrder = 1
+                    OnClick = ImportarNFClick
+                  end
+                  object btIncluirItem: TUniButton
+                    Left = 314
+                    Top = 28
+                    Width = 150
+                    Height = 30
+                    Hint = ''
+                    Caption = 'Incluir por chave'
+                    TabOrder = 2
+                    OnClick = IncluirItemClick
+                  end
+                  object btExcluirItem: TUniButton
+                    Left = 472
+                    Top = 28
+                    Width = 125
+                    Height = 30
+                    Hint = ''
+                    Caption = 'Retirar documento'
+                    TabOrder = 3
+                    OnClick = ExcluirItemClick
+                  end
+                end
+                object grItens: TUniDBGrid
+                  Left = 0
+                  Top = 82
+                  Width = 1353
+                  Height = 807
+                  Hint = ''
+                  ClicksToEdit = 1
+                  DataSource = dsItens
+                  Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgConfirmDelete, dgTabs, dgCancelOnExit]
+                  LoadMask.Message = 'Loading data...'
+                  Align = alClient
+                  TabOrder = 1
+                  Columns = <
+                    item
+                      FieldName = 'TIPO'
+                      Title.Caption = 'Tipo'
+                      Width = 65
+                      Font.Name = 'Calibri'
+                      ReadOnly = True
+                    end
+                    item
+                      FieldName = 'NOTA'
+                      Title.Caption = 'Nota'
+                      Width = 90
+                      Font.Name = 'Calibri'
+                      ReadOnly = True
+                    end
+                    item
+                      FieldName = 'SERIENOTA'
+                      Title.Caption = 'Serie'
+                      Width = 65
+                      Font.Name = 'Calibri'
+                      ReadOnly = True
+                    end
+                    item
+                      FieldName = 'CODIGOBARRAS'
+                      Title.Caption = 'Chave NF-e / CT-e'
+                      Width = 340
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'IBGE'
+                      Title.Caption = 'IBGE descarga'
+                      Width = 110
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'CIDADE'
+                      Title.Caption = 'Municipio descarga'
+                      Width = 210
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'ESTADO'
+                      Title.Caption = 'UF'
+                      Width = 55
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'TOTAL'
+                      Title.Caption = 'Valor'
+                      Width = 110
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'PESOBRUTO'
+                      Title.Caption = 'Peso bruto kg'
+                      Width = 115
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'PESOLIQUIDO'
+                      Title.Caption = 'Peso liquido kg'
+                      Width = 115
+                      Font.Name = 'Calibri'
+                    end
+                    item
+                      FieldName = 'PROTOCOLO'
+                      Title.Caption = 'Protocolo'
+                      Width = 160
+                      Font.Name = 'Calibri'
+                    end>
+                end
+              end
+              object tabResumo: TUniTabSheet
+                Hint = ''
+                Caption = 'Totais e observacoes'
+                object scResumo: TUniScrollBox
+                  Left = 0
+                  Top = 0
+                  Width = 1353
+                  Height = 889
+                  Hint = ''
+                  Align = alClient
+                  TabOrder = 0
+                  ScrollHeight = 4405
+                  ScrollWidth = 960
+                  object rcBlock510: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3570
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 0
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNOTA: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 88
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Quantidade NF-e'
+                      TabOrder = 2
+                    end
+                    object edNOTA: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NOTA'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock520: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3640
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 1
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCONHECIMENTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 87
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Quantidade CT-e'
+                      TabOrder = 2
+                    end
+                    object edCONHECIMENTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CONHECIMENTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock530: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3710
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 2
+                    DesignSize = (
+                      235
+                      65)
+                    object lbTOTAL: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 142
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Valor total dos documentos'
+                      TabOrder = 2
+                    end
+                    object edTOTAL: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'TOTAL'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock540: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3780
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 3
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPESOBRUTO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 105
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Peso bruto total (kg)'
+                      TabOrder = 2
+                    end
+                    object edPESOBRUTO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PESOBRUTO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock550: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3850
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 4
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPESOLIQUIDO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 113
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Peso liquido total (kg)'
+                      TabOrder = 2
+                    end
+                    object edPESOLIQUIDO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PESOLIQUIDO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock560: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3920
+                    Width = 960
+                    Height = 110
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 5
+                    DesignSize = (
+                      960
+                      110)
+                    object lbOBSERVACAO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 65
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Observacoes'
+                      TabOrder = 2
+                    end
+                    object edOBSERVACAO: TUniDBMemo
+                      Left = 4
+                      Top = 25
+                      Width = 948
+                      Height = 80
+                      Hint = ''
+                      DataField = 'OBSERVACAO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock570: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 3990
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 6
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPRODUTOPREDOMINANTE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 118
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Produto predominante'
+                      TabOrder = 2
+                    end
+                    object edPRODUTOPREDOMINANTE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PRODUTOPREDOMINANTE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock580: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 4060
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 7
+                    DesignSize = (
+                      235
+                      65)
+                    object lbNCMPREDOMINANTE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 101
+                      Height = 13
+                      Hint = ''
+                      Caption = 'NCM predominante'
+                      TabOrder = 2
+                    end
+                    object edNCMPREDOMINANTE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'NCMPREDOMINANTE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock590: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 4130
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 8
+                    DesignSize = (
+                      235
+                      65)
+                    object lbEANPREDOMINANTE: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 160
+                      Height = 13
+                      Hint = ''
+                      Caption = 'GTIN predominante (se houver)'
+                      TabOrder = 2
+                    end
+                    object edEANPREDOMINANTE: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'EANPREDOMINANTE'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                    end
+                  end
+                  object rcBlock600: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 4200
+                    Width = 960
+                    Height = 203
+                    Hint = '[[cols:xs-12 sm-6 md-12]]'
+                    ParentColor = False
+                    TabOrder = 9
+                    DesignSize = (
+                      960
+                      203)
+                    object edTIPOCARGAPRED: TUniDBRadioGroup
+                      Left = 4
+                      Top = 0
+                      Width = 940
+                      Height = 198
+                      Hint = ''
+                      DataField = 'TIPOCARGAPRED'
+                      DataSource = dsMaster
+                      Caption = 'Tipo de carga predominante'
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 1
+                      Items.Strings = (
+                        'Granel solido'
+                        'Granel liquido'
+                        'Frigorificada'
+                        'Conteinerizada'
+                        'Carga geral'
+                        'Neogranel'
+                        'Perigosa - granel solido'
+                        'Perigosa - granel liquido'
+                        'Perigosa - frigorificada'
+                        'Perigosa - conteinerizada'
+                        'Perigosa - carga geral'
+                        'Granel pressurizada')
+                      Columns = 2
+                      Values.Strings = (
+                        '1'
+                        '2'
+                        '3'
+                        '4'
+                        '5'
+                        '6'
+                        '7'
+                        '8'
+                        '9'
+                        '10'
+                        '11'
+                        '12')
+                    end
+                  end
+                  object rcBlock610: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 4270
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 10
+                    DesignSize = (
+                      235
+                      65)
+                    object lbCODIGOBARRAS: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 68
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Chave MDF-e'
+                      TabOrder = 2
+                    end
+                    object edCODIGOBARRAS: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'CODIGOBARRAS'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                  object rcBlock620: TUniContainerPanel
+                    Tag = 1
+                    Left = 0
+                    Top = 4340
+                    Width = 235
+                    Height = 65
+                    Hint = '[[cols:xs-12 sm-6 md-3]]'
+                    ParentColor = False
+                    TabOrder = 11
+                    DesignSize = (
+                      235
+                      65)
+                    object lbPROTOCOLO: TUniLabel
+                      Left = 4
+                      Top = 3
+                      Width = 87
+                      Height = 13
+                      Hint = ''
+                      Caption = 'Protocolo MDF-e'
+                      TabOrder = 2
+                    end
+                    object edPROTOCOLO: TUniDBEdit
+                      Left = 4
+                      Top = 25
+                      Width = 223
+                      Height = 35
+                      Hint = ''
+                      DataField = 'PROTOCOLO'
+                      DataSource = dsMaster
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      ReadOnly = True
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+      inherited paSearchFilters: TUniPanel
+        inherited UniScrollBox1: TUniScrollBox
+          ScrollHeight = 746
+          ScrollWidth = 164
+          inherited paSearchBtn: TUniContainerPanel
+            inherited btnSearchCRUD: TUniBitBtn
+              ScreenMask.Target = Owner
+            end
+          end
+        end
+      end
+      inherited paSearchFiltersCustom: TUniPanel
+        inherited sboxSearchFiltersCustom: TUniScrollBox
+          ScrollHeight = 33
+        end
+      end
+    end
+  end
+  inherited sqlSearchMaster: TFDQuery
+    AfterOpen = PesquisaAfterOpen
+  end
+  inherited sqlMaster: TFDQuery
+    AfterOpen = MasterAfterOpen
+    BeforeEdit = MasterBeforeEdit
+  end
+  object qryItens: TFDQuery
+    BeforeInsert = ItemBeforeEdit
+    BeforeEdit = ItemBeforeEdit
+    BeforePost = ItemBeforePost
+    BeforeDelete = ItemBeforeEdit
+    OnNewRecord = ItemNewRecord
+    CachedUpdates = True
+    Left = 400
+    Top = 20
+  end
+  object dsItens: TDataSource
+    DataSet = qryItens
+    Left = 460
+    Top = 20
+  end
+end

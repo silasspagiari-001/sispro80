@@ -1,0 +1,823 @@
+﻿unit untFrmMANIFESTOS;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.StrUtils, Data.DB, Vcl.Controls,
+  Vcl.Forms, uniGUIClasses, uniGUIBaseClasses, uniGUIFrame, uniGUITypes,
+  uniPanel, uniPageControl, uniScrollBox, uniLabel, uniEdit, uniDBEdit,
+  uniButton, uniBitBtn, uniBasicGrid, uniDBGrid, uniMemo, uniDBMemo,
+  uniDateTimePicker, uniDBDateTimePicker, uniMultiItem, uniComboBox,
+  uniDBComboBox, uniRadioGroup, uniDBRadioGroup, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  untFrmBaseCRUD, Vcl.Menus, uniMainMenu, uniSweetAlert, uniHTMLFrame,
+  uniCheckBox;
+
+type
+  TfrmMANIFESTOS = class(TfrmBaseCRUD)
+    lbCODIGO: TUniLabel;
+    edCODIGO: TUniDBEdit;
+    rcBlock10: TUniContainerPanel;
+    lbNUMERO: TUniLabel;
+    edNUMERO: TUniDBEdit;
+    rcBlock20: TUniContainerPanel;
+    lbDOCUMENTO: TUniLabel;
+    edDOCUMENTO: TUniDBEdit;
+    rcBlock30: TUniContainerPanel;
+    lbSERIE: TUniLabel;
+    edSERIE: TUniDBEdit;
+    rcBlock40: TUniContainerPanel;
+    lbEMISSAO: TUniLabel;
+    edEMISSAO: TUniDBDateTimePicker;
+    rcBlock50: TUniContainerPanel;
+    lbHORAEMISSAO: TUniLabel;
+    edHORAEMISSAO: TUniDBEdit;
+    rcBlock60: TUniContainerPanel;
+    lbTRANSPORTADORA: TUniLabel;
+    edTRANSPORTADORA: TUniDBEdit;
+    rcBlock70: TUniContainerPanel;
+    lbNOMETRANSPORTADORA: TUniLabel;
+    edNOMETRANSPORTADORA: TUniDBEdit;
+    rcBlock80: TUniContainerPanel;
+    lbCPFCNPJ: TUniLabel;
+    edCPFCNPJ: TUniDBEdit;
+    rcBlock90: TUniContainerPanel;
+    lbNOMECONDUTOR: TUniLabel;
+    edNOMECONDUTOR: TUniDBEdit;
+    rcBlock100: TUniContainerPanel;
+    lbCPFCONDUTOR: TUniLabel;
+    edCPFCONDUTOR: TUniDBEdit;
+    rcBlock110: TUniContainerPanel;
+    lbAJUDANTE: TUniLabel;
+    edAJUDANTE: TUniDBEdit;
+    rcBlock120: TUniContainerPanel;
+    lbRNTC: TUniLabel;
+    edRNTC: TUniDBEdit;
+    rcBlock130: TUniContainerPanel;
+    lbCIOT: TUniLabel;
+    edCIOT: TUniDBEdit;
+    rcBlock140: TUniContainerPanel;
+    edTIPOEMITENTE: TUniDBRadioGroup;
+    rcBlock150: TUniContainerPanel;
+    lbVLRCONTRATADO: TUniLabel;
+    edVLRCONTRATADO: TUniDBEdit;
+    rcBlock160: TUniContainerPanel;
+    lbCANCELADA: TUniLabel;
+    edCANCELADA: TUniDBEdit;
+    rcBlock170: TUniContainerPanel;
+    scGeral: TUniScrollBox;
+    tabGeral: TUniTabSheet;
+    lbPLACATRATOR: TUniLabel;
+    edPLACATRATOR: TUniDBEdit;
+    rcBlock180: TUniContainerPanel;
+    lbESTADOTRATOR: TUniLabel;
+    edESTADOTRATOR: TUniDBEdit;
+    rcBlock190: TUniContainerPanel;
+    lbRENAVAM: TUniLabel;
+    edRENAVAM: TUniDBEdit;
+    rcBlock200: TUniContainerPanel;
+    lbTRATORTARA: TUniLabel;
+    edTRATORTARA: TUniDBEdit;
+    rcBlock210: TUniContainerPanel;
+    lbTRATORKG: TUniLabel;
+    edTRATORKG: TUniDBEdit;
+    rcBlock220: TUniContainerPanel;
+    lbTRATORM3: TUniLabel;
+    edTRATORM3: TUniDBEdit;
+    rcBlock230: TUniContainerPanel;
+    lbPLACACARRETA: TUniLabel;
+    edPLACACARRETA: TUniDBEdit;
+    rcBlock240: TUniContainerPanel;
+    lbESTADOCARRETA: TUniLabel;
+    edESTADOCARRETA: TUniDBEdit;
+    rcBlock250: TUniContainerPanel;
+    lbRENAVAMCARRETA: TUniLabel;
+    edRENAVAMCARRETA: TUniDBEdit;
+    rcBlock260: TUniContainerPanel;
+    lbCARRETATARA: TUniLabel;
+    edCARRETATARA: TUniDBEdit;
+    rcBlock270: TUniContainerPanel;
+    lbCARRETAKG: TUniLabel;
+    edCARRETAKG: TUniDBEdit;
+    rcBlock280: TUniContainerPanel;
+    lbCARRETAM3: TUniLabel;
+    edCARRETAM3: TUniDBEdit;
+    rcBlock290: TUniContainerPanel;
+    lbPLACAREBOQUE: TUniLabel;
+    edPLACAREBOQUE: TUniDBEdit;
+    rcBlock300: TUniContainerPanel;
+    lbESTADOREBOQUE: TUniLabel;
+    edESTADOREBOQUE: TUniDBEdit;
+    rcBlock310: TUniContainerPanel;
+    lbRENAVAMREBOQUE: TUniLabel;
+    edRENAVAMREBOQUE: TUniDBEdit;
+    rcBlock320: TUniContainerPanel;
+    lbREBOQUETARA: TUniLabel;
+    edREBOQUETARA: TUniDBEdit;
+    rcBlock330: TUniContainerPanel;
+    lbREBOQUEKG: TUniLabel;
+    edREBOQUEKG: TUniDBEdit;
+    rcBlock340: TUniContainerPanel;
+    lbREBOQUEM3: TUniLabel;
+    edREBOQUEM3: TUniDBEdit;
+    rcBlock350: TUniContainerPanel;
+    edTIPOVEICULO: TUniDBRadioGroup;
+    rcBlock360: TUniContainerPanel;
+    edTIPOCARROCERIA: TUniDBRadioGroup;
+    rcBlock370: TUniContainerPanel;
+    edTIPOCARGA: TUniDBRadioGroup;
+    rcBlock380: TUniContainerPanel;
+    scVeiculos: TUniScrollBox;
+    tabVeiculos: TUniTabSheet;
+    lbESTADOINI: TUniLabel;
+    edESTADOINI: TUniDBEdit;
+    rcBlock390: TUniContainerPanel;
+    lbESTADOFIN: TUniLabel;
+    edESTADOFIN: TUniDBEdit;
+    rcBlock400: TUniContainerPanel;
+    lbPERCURSO: TUniLabel;
+    edPERCURSO: TUniDBEdit;
+    rcBlock410: TUniContainerPanel;
+    lbIBGECARREGAMENTO: TUniLabel;
+    edIBGECARREGAMENTO: TUniDBEdit;
+    rcBlock420: TUniContainerPanel;
+    lbCIDADECARREGAMENTO: TUniLabel;
+    edCIDADECARREGAMENTO: TUniDBEdit;
+    rcBlock430: TUniContainerPanel;
+    lbUFCARRREGAMENTO: TUniLabel;
+    edUFCARRREGAMENTO: TUniDBEdit;
+    rcBlock440: TUniContainerPanel;
+    lbCEP_CARREGAMENTO: TUniLabel;
+    edCEP_CARREGAMENTO: TUniDBEdit;
+    rcBlock450: TUniContainerPanel;
+    lbCEP_DESTINO: TUniLabel;
+    edCEP_DESTINO: TUniDBEdit;
+    rcBlock460: TUniContainerPanel;
+    scPercurso: TUniScrollBox;
+    tabPercurso: TUniTabSheet;
+    lbNOMESEGURADORA: TUniLabel;
+    edNOMESEGURADORA: TUniDBEdit;
+    rcBlock470: TUniContainerPanel;
+    lbCNPJSEGURADORA: TUniLabel;
+    edCNPJSEGURADORA: TUniDBEdit;
+    rcBlock480: TUniContainerPanel;
+    lbAPOLICE: TUniLabel;
+    edAPOLICE: TUniDBEdit;
+    rcBlock490: TUniContainerPanel;
+    lbAVERBACAO: TUniLabel;
+    edAVERBACAO: TUniDBEdit;
+    rcBlock500: TUniContainerPanel;
+    scSeguro: TUniScrollBox;
+    tabSeguro: TUniTabSheet;
+    lbCodigoNF: TUniLabel;
+    edCodigoNF: TUniEdit;
+    btImportarNF: TUniButton;
+    btIncluirItem: TUniButton;
+    btExcluirItem: TUniButton;
+    paItensAcoes: TUniContainerPanel;
+    grItens: TUniDBGrid;
+    tabDocumentos: TUniTabSheet;
+    lbNOTA: TUniLabel;
+    edNOTA: TUniDBEdit;
+    rcBlock510: TUniContainerPanel;
+    lbCONHECIMENTO: TUniLabel;
+    edCONHECIMENTO: TUniDBEdit;
+    rcBlock520: TUniContainerPanel;
+    lbTOTAL: TUniLabel;
+    edTOTAL: TUniDBEdit;
+    rcBlock530: TUniContainerPanel;
+    lbPESOBRUTO: TUniLabel;
+    edPESOBRUTO: TUniDBEdit;
+    rcBlock540: TUniContainerPanel;
+    lbPESOLIQUIDO: TUniLabel;
+    edPESOLIQUIDO: TUniDBEdit;
+    rcBlock550: TUniContainerPanel;
+    lbOBSERVACAO: TUniLabel;
+    edOBSERVACAO: TUniDBMemo;
+    rcBlock560: TUniContainerPanel;
+    lbPRODUTOPREDOMINANTE: TUniLabel;
+    edPRODUTOPREDOMINANTE: TUniDBEdit;
+    rcBlock570: TUniContainerPanel;
+    lbNCMPREDOMINANTE: TUniLabel;
+    edNCMPREDOMINANTE: TUniDBEdit;
+    rcBlock580: TUniContainerPanel;
+    lbEANPREDOMINANTE: TUniLabel;
+    edEANPREDOMINANTE: TUniDBEdit;
+    rcBlock590: TUniContainerPanel;
+    edTIPOCARGAPRED: TUniDBRadioGroup;
+    rcBlock600: TUniContainerPanel;
+    lbCODIGOBARRAS: TUniLabel;
+    edCODIGOBARRAS: TUniDBEdit;
+    rcBlock610: TUniContainerPanel;
+    lbPROTOCOLO: TUniLabel;
+    edPROTOCOLO: TUniDBEdit;
+    rcBlock620: TUniContainerPanel;
+    scResumo: TUniScrollBox;
+    tabResumo: TUniTabSheet;
+    pgComplementData: TUniPageControl;
+    btSefaz: TUniButton;
+    btBuscarTransportador: TUniButton;
+    paFiscal: TUniContainerPanel;
+    qryItens: TFDQuery;
+    dsItens: TDataSource;
+    procedure ManifestoCreate(Sender: TObject);
+    procedure NovoClick(Sender: TObject);
+    procedure EditarClick(Sender: TObject);
+    procedure SalvarClick(Sender: TObject);
+    procedure CancelarClick(Sender: TObject);
+    procedure ExcluirClick(Sender: TObject);
+    procedure MasterAfterOpen(DataSet: TDataSet);
+    procedure MasterBeforeEdit(DataSet: TDataSet);
+    procedure ItemBeforeEdit(DataSet: TDataSet);
+    procedure ItemNewRecord(DataSet: TDataSet);
+    procedure ItemBeforePost(DataSet: TDataSet);
+    procedure IncluirItemClick(Sender: TObject);
+    procedure ExcluirItemClick(Sender: TObject);
+    procedure ImportarNFClick(Sender: TObject);
+    procedure SefazClick(Sender: TObject);
+    procedure BuscarTransportadorClick(Sender: TObject);
+    procedure PesquisaAfterOpen(DataSet: TDataSet);
+    procedure StatusGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+  private
+    FPronto, FNovo: Boolean;
+    FAssinatura: string;
+    function Consulta(const SQL: string): TFDQuery;
+    function NovoGUID: string;
+    function Assinatura(DataSet: TDataSet): string;
+    function SituacaoEditavel(const S: string): Boolean;
+    procedure ExigirEdicao;
+    procedure CarregarItens;
+    procedure Validar;
+    procedure Totalizar;
+    procedure ReservarNumeracao;
+    procedure BloquearOriginal;
+    procedure GravarItens;
+    function ProximoCodigo(const Gerador: string): Integer;
+    function ChaveValida(const Chave: string): Boolean;
+    procedure Reabrir(const Codigo: Integer);
+  end;
+
+implementation
+
+uses MainModule, untDM_RC, mkm_validate, uconsts_cfg, untfrmSEFAZMANIFESTO, untFrmPesquisa;
+
+{$R *.dfm}
+
+function TfrmMANIFESTOS.Consulta(const SQL: string): TFDQuery;
+begin
+  Result := TFDQuery.Create(nil);
+  Result.Connection := sqlMaster.Connection;
+  Result.SQL.Text := SQL;
+end;
+
+procedure TfrmMANIFESTOS.PesquisaAfterOpen(DataSet: TDataSet);
+begin
+  if DataSet.FindField('CANCELADA')<>nil then
+    DataSet.FieldByName('CANCELADA').OnGetText:=StatusGetText;
+end;
+
+procedure TfrmMANIFESTOS.StatusGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+var Cor, Legenda: string;
+begin
+  Text:=Sender.AsString;
+  if not DisplayText then Exit;
+  Cor:='#b45309'; Legenda:='Pendente';
+  if Text='A' then begin Cor:='#15803d'; Legenda:='Autorizado'; end
+  else if Text='E' then begin Cor:='#0369a1'; Legenda:='Encerrado'; end
+  else if Text='C' then begin Cor:='#b91c1c'; Legenda:='Cancelado'; end
+  else if Text='D' then begin Cor:='#b91c1c'; Legenda:='Denegado'; end;
+  Text:='<span style="display:inline-block;padding:3px 8px;border-radius:8px;color:white;background:'+Cor+'">'+Legenda+'</span>';
+end;
+
+function TfrmMANIFESTOS.NovoGUID: string;
+var G: TGUID;
+begin
+  CreateGUID(G);
+  Result := GUIDToString(G);
+end;
+
+function TfrmMANIFESTOS.Assinatura(DataSet: TDataSet): string;
+var F: TField; S: string;
+begin
+  Result := '';
+  for F in DataSet.Fields do
+  begin
+    if F.IsNull then S := '<NULL>' else S := F.AsString;
+    Result := Result + F.FieldName + ':' + IntToStr(Length(S)) + ':' + S + ';';
+  end;
+end;
+
+function TfrmMANIFESTOS.SituacaoEditavel(const S: string): Boolean;
+begin
+  Result := (Trim(S) = '') or SameText(Trim(S), 'N');
+end;
+
+procedure TfrmMANIFESTOS.ManifestoCreate(Sender: TObject);
+begin
+  FPronto := False;
+  mm.varC_Table_Search := 'mfmestre';
+  mm.varC_PK_MasterTable := 'CODIGO';
+  sqlMaster.SQL.Text :=
+    'SELECT tab.* FROM MFMESTRE tab WHERE tab.[[pk]] = :table_pk '+
+    'AND tab.EMPRESA = '+IntToStr(mm.varI_Code_Company)+
+    ' [grid] SELECT tab.CODIGO, tab.NUMERO, tab.SERIE, tab.EMISSAO, '+
+    'tab.NOMETRANSPORTADORA, tab.PLACATRATOR, tab.ESTADOINI, tab.ESTADOFIN, '+
+    'tab.CANCELADA, tab.TOTAL, tab.EMPRESA, tab.DOCUMENTO, tab."KEY" '+
+    'FROM MFMESTRE tab';
+  ed_Where_Search.Text := 'tab.EMPRESA = '+IntToStr(mm.varI_Code_Company);
+  ed_Order_Search.Text := 'tab.NUMERO DESC';
+  dbgSearchCRUD.Hint := '[[fieldmasks:model-crud:2|info-state:off|grid-paginator:center|]]';
+  inherited UniFrameCreate(Sender);
+  btnNewReg.OnClick := NovoClick;
+  btnEditReg.OnClick := EditarClick;
+  btnSaveReg.OnClick := SalvarClick;
+  btnCancelReg.OnClick := CancelarClick;
+  btnDeleteReg.OnClick := ExcluirClick;
+  sqlMaster.SchemaAdapter := nil;
+  sqlMaster.UpdateOptions.UpdateTableName := 'MFMESTRE';
+  sqlMaster.UpdateOptions.KeyFields := 'KEY';
+  sqlMaster.CachedUpdates := True;
+  qryItens.Connection := sqlMaster.Connection;
+  qryItens.CachedUpdates := True;
+  qryItens.UpdateOptions.UpdateTableName := 'MFITENS';
+  qryItens.UpdateOptions.KeyFields := 'KEY';
+  ed_NoGenID.Text := 'true';
+  ed_GenNextID_OnNew.Text := 'false';
+  labTitleForm.Caption := 'Manifestos - MDF-e';
+  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name, 'tab.NUMERO', 'Numero');
+  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name, 'tab.NOMETRANSPORTADORA', 'Transportador');
+  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name, 'tab.PLACATRATOR', 'Placa');
+  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name, 'tab.CANCELADA', 'Situacao: N/A/E/C');
+  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDFieldDate.Name, 'tab.EMISSAO', 'Emissao');
+  FPronto := True;
+  CarregarItens;
+  btnSearchCRUDClick(Self);
+end;
+
+procedure TfrmMANIFESTOS.MasterAfterOpen(DataSet: TDataSet);
+begin
+  if not FPronto then Exit;
+  if not DataSet.IsEmpty then FAssinatura := Assinatura(DataSet);
+  CarregarItens;
+end;
+
+procedure TfrmMANIFESTOS.CarregarItens;
+begin
+  qryItens.Close;
+  qryItens.SQL.Text := 'SELECT * FROM MFITENS WHERE EMPRESA=:EMP '+
+    'AND DOCUMENTO=:DOC AND NUMERO=:NUM ORDER BY SEQUENCIA';
+  qryItens.ParamByName('EMP').AsInteger := mm.varI_Code_Company;
+  qryItens.ParamByName('DOC').AsInteger := -1;
+  qryItens.ParamByName('NUM').AsInteger := -1;
+  if sqlMaster.Active and not sqlMaster.IsEmpty and not FNovo then
+  begin
+    qryItens.ParamByName('DOC').AsInteger := sqlMaster.FieldByName('DOCUMENTO').AsInteger;
+    qryItens.ParamByName('NUM').AsInteger := sqlMaster.FieldByName('NUMERO').AsInteger;
+  end;
+  qryItens.Open;
+end;
+
+procedure TfrmMANIFESTOS.MasterBeforeEdit(DataSet: TDataSet);
+begin
+  if not FPronto then Exit;
+  if not dm_rc.rc_PermissionVerify(ed_FormOrigin_Tab.Text, 'mfmestre', PT_EDIT) then Abort;
+  edDOCUMENTO.ReadOnly := True;
+  edSERIE.ReadOnly := True;
+  if not SituacaoEditavel(DataSet.FieldByName('CANCELADA').AsString) then
+    raise Exception.Create('Manifesto autorizado, encerrado ou cancelado nao pode ser alterado.');
+  if DataSet.FieldByName('EMPRESA').AsInteger <> mm.varI_Code_Company then
+    raise Exception.Create('O manifesto pertence a outra empresa.');
+end;
+
+procedure TfrmMANIFESTOS.NovoClick(Sender: TObject);
+begin
+  FNovo := False;
+  inherited btnNewRegClick(Sender);
+  if sqlMaster.State <> dsInsert then Exit;
+  FNovo := True;
+  CarregarItens;
+  sqlMaster.FieldByName('KEY').AsString := NovoGUID;
+  sqlMaster.FieldByName('CODIGO').AsInteger := -1;
+  sqlMaster.FieldByName('EMPRESA').AsInteger := mm.varI_Code_Company;
+  sqlMaster.FieldByName('NUMERO').AsInteger := 0;
+  sqlMaster.FieldByName('SERIE').AsString := '1';
+  sqlMaster.FieldByName('EMISSAO').AsDateTime := Date;
+  sqlMaster.FieldByName('HORAEMISSAO').AsString := FormatDateTime('hh:nn:ss', Now);
+  sqlMaster.FieldByName('CANCELADA').AsString := 'N';
+  sqlMaster.FieldByName('MODALVIARIO').AsInteger := 1;
+  sqlMaster.FieldByName('LOGINCLUSAO').AsString := Copy(mm.vUserName,1,40)+' '+FormatDateTime('yyyy-mm-dd hh:nn:ss',Now);
+  edDOCUMENTO.ReadOnly := False;
+  edSERIE.ReadOnly := False;
+  pgComplementData.ActivePageIndex := 0;
+end;
+
+procedure TfrmMANIFESTOS.EditarClick(Sender: TObject);
+begin
+  FNovo := False;
+  inherited btnEditRegClick(Sender);
+  edDOCUMENTO.ReadOnly := True;
+  edSERIE.ReadOnly := True;
+end;
+
+procedure TfrmMANIFESTOS.ExigirEdicao;
+begin
+  if not (sqlMaster.State in dsEditModes) then
+    raise Exception.Create('Clique em Novo ou Edita antes de alterar os documentos.');
+  if not SituacaoEditavel(sqlMaster.FieldByName('CANCELADA').AsString) then
+    raise Exception.Create('A situacao do manifesto nao permite alteracao.');
+end;
+
+procedure TfrmMANIFESTOS.ItemBeforeEdit(DataSet: TDataSet);
+begin
+  ExigirEdicao;
+end;
+
+procedure TfrmMANIFESTOS.ItemNewRecord(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('KEY').AsString := NovoGUID;
+  DataSet.FieldByName('CODIGO').AsInteger := -1;
+  DataSet.FieldByName('EMPRESA').AsInteger := mm.varI_Code_Company;
+  DataSet.FieldByName('TIPO').AsString := 'NFE';
+  DataSet.FieldByName('TOTAL').AsCurrency := 0;
+  DataSet.FieldByName('PESOBRUTO').AsFloat := 0;
+  DataSet.FieldByName('PESOLIQUIDO').AsFloat := 0;
+end;
+
+function TfrmMANIFESTOS.ChaveValida(const Chave: string): Boolean;
+var I, Peso, Soma, Digito: Integer;
+begin
+  Result := False;
+  if Length(Chave) <> 44 then Exit;
+  for I := 1 to 44 do if not CharInSet(Chave[I], ['0'..'9']) then Exit;
+  if not MatchStr(Copy(Chave,21,2), ['55','57']) then Exit;
+  Peso := 2; Soma := 0;
+  for I := 43 downto 1 do
+  begin
+    Inc(Soma, (Ord(Chave[I])-Ord('0'))*Peso);
+    Inc(Peso); if Peso > 9 then Peso := 2;
+  end;
+  Digito := 11-(Soma mod 11);
+  if Digito >= 10 then Digito := 0;
+  Result := Digito = Ord(Chave[44])-Ord('0');
+end;
+
+procedure TfrmMANIFESTOS.ItemBeforePost(DataSet: TDataSet);
+var Chave, Modelo: string;
+begin
+  ExigirEdicao;
+  Chave := Trim(DataSet.FieldByName('CODIGOBARRAS').AsString);
+  if not ChaveValida(Chave) then
+    raise Exception.Create('Informe uma chave NF-e/CT-e valida, com 44 digitos.');
+  if Copy(Chave,21,2)='55' then Modelo := 'NFE' else Modelo := 'CTE';
+  DataSet.FieldByName('TIPO').AsString := Modelo;
+  DataSet.FieldByName('CODIGOBARRAS').AsString := Chave;
+  DataSet.FieldByName('NOTA').AsString := IntToStr(StrToInt(Copy(Chave,26,9)));
+  DataSet.FieldByName('SERIENOTA').AsString := Copy(Chave,23,3);
+  DataSet.FieldByName('SERIE').Value := sqlMaster.FieldByName('SERIE').Value;
+  if Length(Trim(DataSet.FieldByName('IBGE').AsString)) <> 7 then
+    raise Exception.Create('Informe o IBGE de 7 digitos do municipio de descarga.');
+  if Trim(DataSet.FieldByName('CIDADE').AsString) = '' then
+    raise Exception.Create('Informe o municipio de descarga.');
+  if (DataSet.FieldByName('TOTAL').AsCurrency < 0) or
+     (DataSet.FieldByName('PESOBRUTO').AsFloat < 0) or
+     (DataSet.FieldByName('PESOLIQUIDO').AsFloat < 0) then
+    raise Exception.Create('Valores e pesos nao podem ser negativos.');
+end;
+
+procedure TfrmMANIFESTOS.IncluirItemClick(Sender: TObject);
+begin
+  ExigirEdicao;
+  qryItens.Append;
+end;
+
+procedure TfrmMANIFESTOS.ExcluirItemClick(Sender: TObject);
+begin
+  ExigirEdicao;
+  if not qryItens.IsEmpty then qryItens.Delete;
+end;
+
+procedure TfrmMANIFESTOS.ImportarNFClick(Sender: TObject);
+var Q: TFDQuery; Codigo: Integer;
+begin
+  ExigirEdicao;
+  Codigo := StrToIntDef(edCodigoNF.Text,0);
+  if Codigo <= 0 then raise Exception.Create('Informe o codigo interno da NF-e.');
+  Q := Consulta('SELECT m.*, p.CIDADE AS DESC_CIDADE, p.IBGE AS DESC_IBGE, '+
+    'p.ESTADO AS DESC_UF FROM MVMESTRE m LEFT JOIN PESSOAS p ON p.CODIGO=m.PESSOA '+
+    'WHERE m.CODIGO=:COD AND m.EMPRESA=:EMP AND m.DOCUMENTO=1 AND m.CANCELADA=''A''');
+  try
+    Q.ParamByName('COD').AsInteger := Codigo;
+    Q.ParamByName('EMP').AsInteger := mm.varI_Code_Company;
+    Q.Open;
+    if Q.IsEmpty then raise Exception.Create('NF-e autorizada nao encontrada nesta empresa.');
+    if not ChaveValida(Q.FieldByName('CODIGOBARRAS').AsString) then
+      raise Exception.Create('A NF-e cadastrada nao possui chave valida.');
+    if qryItens.Locate('CODIGOBARRAS',Q.FieldByName('CODIGOBARRAS').AsString,[]) then
+      raise Exception.Create('Esta NF-e ja foi incluida.');
+    qryItens.Append;
+    try
+      qryItens.FieldByName('CODIGOBARRAS').Value := Q.FieldByName('CODIGOBARRAS').Value;
+      qryItens.FieldByName('PROTOCOLO').Value := Q.FieldByName('PROTOCOLO').Value;
+      qryItens.FieldByName('PESSOA').Value := Q.FieldByName('PESSOA').Value;
+      qryItens.FieldByName('TOTAL').Value := Q.FieldByName('VLRTOTAL').Value;
+      qryItens.FieldByName('PESOBRUTO').Value := Q.FieldByName('TRAPESOBRUTO').Value;
+      qryItens.FieldByName('PESOLIQUIDO').Value := Q.FieldByName('TRAPESOLIQUIDO').Value;
+      qryItens.FieldByName('CIDADE').Value := Q.FieldByName('DESC_CIDADE').Value;
+      qryItens.FieldByName('IBGE').Value := Q.FieldByName('DESC_IBGE').Value;
+      qryItens.FieldByName('ESTADO').Value := Q.FieldByName('DESC_UF').Value;
+      qryItens.Post;
+    except
+      qryItens.Cancel;
+      raise;
+    end;
+  finally Q.Free; end;
+end;
+
+procedure TfrmMANIFESTOS.Totalizar;
+var N, C: Integer; Total: Currency; Bruto, Liquido: Double;
+begin
+  N:=0; C:=0; Total:=0; Bruto:=0; Liquido:=0;
+  qryItens.DisableControls;
+  try
+    qryItens.First;
+    while not qryItens.Eof do
+    begin
+      if qryItens.FieldByName('TIPO').AsString='NFE' then Inc(N) else Inc(C);
+      Total := Total + qryItens.FieldByName('TOTAL').AsCurrency;
+      Bruto := Bruto + qryItens.FieldByName('PESOBRUTO').AsFloat;
+      Liquido := Liquido + qryItens.FieldByName('PESOLIQUIDO').AsFloat;
+      qryItens.Next;
+    end;
+    sqlMaster.FieldByName('NOTA').AsInteger := N;
+    sqlMaster.FieldByName('CONHECIMENTO').AsInteger := C;
+    sqlMaster.FieldByName('TOTAL').AsCurrency := Total;
+    sqlMaster.FieldByName('PESOBRUTO').AsFloat := Bruto;
+    sqlMaster.FieldByName('PESOLIQUIDO').AsFloat := Liquido;
+  finally qryItens.EnableControls; end;
+end;
+
+procedure TfrmMANIFESTOS.Validar;
+var Nome, Chave, UF: string; Chaves: TStringList;
+begin
+  ExigirEdicao;
+  if sqlMaster.FieldByName('EMPRESA').AsInteger<>mm.varI_Code_Company then
+    raise Exception.Create('Empresa do manifesto invalida.');
+  if sqlMaster.FieldByName('DOCUMENTO').AsInteger<=0 then
+    raise Exception.Create('Informe o codigo do documento MDF-e usado no SISPRO.');
+  if StrToIntDef(sqlMaster.FieldByName('SERIE').AsString,-1)<0 then
+    raise Exception.Create('Informe uma serie numerica.');
+  for Nome in ['ESTADOINI','ESTADOFIN','ESTADOTRATOR'] do
+  begin
+    UF:=UpperCase(Trim(sqlMaster.FieldByName(Nome).AsString));
+    if not MatchStr(UF,['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+      'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']) then
+      raise Exception.Create('UF invalida no campo '+Nome+'.');
+    sqlMaster.FieldByName(Nome).AsString:=UF;
+  end;
+  if not MatchStr(sqlMaster.FieldByName('TIPOEMITENTE').AsString,['0','1']) then
+    raise Exception.Create('Selecione o tipo de emitente.');
+  if not MatchStr(sqlMaster.FieldByName('TIPOVEICULO').AsString,['0','1','2','3','4','5']) then
+    raise Exception.Create('Selecione o tipo de veiculo.');
+  if not MatchStr(sqlMaster.FieldByName('TIPOCARROCERIA').AsString,['0','1','2','3','4']) then
+    raise Exception.Create('Selecione o tipo de carroceria.');
+  if not MatchStr(sqlMaster.FieldByName('TIPOCARGA').AsString,['0','1','2','3']) then
+    raise Exception.Create('Selecione o acondicionamento da carga.');
+  for Nome in ['EMISSAO','NOMETRANSPORTADORA','PLACATRATOR','ESTADOTRATOR',
+    'ESTADOINI','ESTADOFIN','TIPOEMITENTE','TIPOVEICULO','TIPOCARROCERIA',
+    'TIPOCARGA','IBGECARREGAMENTO','CIDADECARREGAMENTO'] do
+    if Trim(sqlMaster.FieldByName(Nome).AsString)='' then
+      raise Exception.Create('Preencha o campo '+Nome+'.');
+  if qryItens.State in dsEditModes then qryItens.Post;
+  if qryItens.IsEmpty then raise Exception.Create('Inclua pelo menos uma NF-e ou CT-e.');
+  Chaves := TStringList.Create;
+  qryItens.DisableControls;
+  try
+    qryItens.First;
+    while not qryItens.Eof do
+    begin
+      Chave := qryItens.FieldByName('CODIGOBARRAS').AsString;
+      if not ChaveValida(Chave) then raise Exception.Create('Documento com chave invalida.');
+      if Chaves.IndexOf(Chave)>=0 then raise Exception.Create('Chave repetida: '+Chave);
+      Chaves.Add(Chave);
+      qryItens.Next;
+    end;
+  finally qryItens.EnableControls; Chaves.Free; end;
+  Totalizar;
+end;
+
+function TfrmMANIFESTOS.ProximoCodigo(const Gerador: string): Integer;
+var Q: TFDQuery;
+begin
+  if not MatchStr(Gerador,['RC_MFMESTRE_ID','RC_MFITENS_ID']) then
+    raise Exception.Create('Gerador invalido.');
+  Q:=Consulta('SELECT NEXT VALUE FOR '+Gerador+' AS ID FROM RDB$DATABASE');
+  try Q.Open; Result:=Q.FieldByName('ID').AsInteger; finally Q.Free; end;
+end;
+
+procedure TfrmMANIFESTOS.ReservarNumeracao;
+var Q: TFDQuery; Emp, Doc, Ultimo: Integer;
+begin
+  Emp:=mm.varI_Code_Company;
+  Doc:=sqlMaster.FieldByName('DOCUMENTO').AsInteger;
+  Q:=Consulta('SELECT ULTIMO FROM RC_MF_NUMERACAO WHERE EMPRESA=:EMP AND DOCUMENTO=:DOC WITH LOCK');
+  try
+    Q.ParamByName('EMP').AsInteger:=Emp; Q.ParamByName('DOC').AsInteger:=Doc; Q.Open;
+    if Q.IsEmpty then
+    begin
+      Q.Close;
+      Q.SQL.Text:='INSERT INTO RC_MF_NUMERACAO (EMPRESA,DOCUMENTO,ULTIMO) '+
+        'SELECT :EMP,:DOC,COALESCE(MAX(NUMERO),0) FROM MFMESTRE WHERE EMPRESA=:EMP AND DOCUMENTO=:DOC';
+      Q.ParamByName('EMP').AsInteger:=Emp; Q.ParamByName('DOC').AsInteger:=Doc; Q.ExecSQL;
+    end;
+    Q.Close;
+    Q.SQL.Text:='UPDATE RC_MF_NUMERACAO SET ULTIMO=ULTIMO+1 '+
+      'WHERE EMPRESA=:EMP AND DOCUMENTO=:DOC RETURNING ULTIMO';
+    Q.ParamByName('EMP').AsInteger:=Emp; Q.ParamByName('DOC').AsInteger:=Doc; Q.Open;
+    Ultimo:=Q.FieldByName('ULTIMO').AsInteger;
+    if (Ultimo<=0) or (Ultimo>999999999) then raise Exception.Create('Numeracao de MDF-e esgotada.');
+    sqlMaster.FieldByName('NUMERO').AsInteger:=Ultimo;
+    sqlMaster.FieldByName('CODIGO').AsInteger:=ProximoCodigo('RC_MFMESTRE_ID');
+  finally Q.Free; end;
+end;
+
+procedure TfrmMANIFESTOS.BloquearOriginal;
+var Q: TFDQuery;
+begin
+  Q:=Consulta('SELECT * FROM MFMESTRE WHERE "KEY"=:CHAVE AND EMPRESA=:EMP WITH LOCK');
+  try
+    Q.ParamByName('CHAVE').AsString:=sqlMaster.FieldByName('KEY').AsString;
+    Q.ParamByName('EMP').AsInteger:=mm.varI_Code_Company;
+    Q.Open;
+    if Q.IsEmpty then raise Exception.Create('Manifesto excluido por outro usuario. Reabra a pesquisa.');
+    if Assinatura(Q)<>FAssinatura then
+      raise Exception.Create('Manifesto alterado por outro usuario. Cancele a edicao e reabra o registro.');
+    if not SituacaoEditavel(Q.FieldByName('CANCELADA').AsString) then
+      raise Exception.Create('Manifesto ja processado pela SEFAZ.');
+    if (Q.FieldByName('DOCUMENTO').AsInteger<>sqlMaster.FieldByName('DOCUMENTO').AsInteger) or
+       (Q.FieldByName('NUMERO').AsInteger<>sqlMaster.FieldByName('NUMERO').AsInteger) or
+       (Q.FieldByName('CODIGO').AsInteger<>sqlMaster.FieldByName('CODIGO').AsInteger) or
+       (Q.FieldByName('SERIE').AsString<>sqlMaster.FieldByName('SERIE').AsString) then
+      raise Exception.Create('Documento, numero, codigo e serie de um manifesto salvo nao podem ser alterados.');
+  finally Q.Free; end;
+end;
+
+procedure TfrmMANIFESTOS.GravarItens;
+var Seq: Integer;
+begin
+  Seq:=0;
+  qryItens.DisableControls;
+  try
+    qryItens.First;
+    while not qryItens.Eof do
+    begin
+      Inc(Seq);
+      qryItens.Edit;
+      if qryItens.FieldByName('CODIGO').AsInteger<=0 then
+        qryItens.FieldByName('CODIGO').AsInteger:=ProximoCodigo('RC_MFITENS_ID');
+      qryItens.FieldByName('EMPRESA').AsInteger:=mm.varI_Code_Company;
+      qryItens.FieldByName('DOCUMENTO').Value:=sqlMaster.FieldByName('DOCUMENTO').Value;
+      qryItens.FieldByName('NUMERO').Value:=sqlMaster.FieldByName('NUMERO').Value;
+      qryItens.FieldByName('SEQUENCIA').AsInteger:=Seq;
+      qryItens.Post;
+      qryItens.Next;
+    end;
+  finally qryItens.EnableControls; end;
+end;
+
+procedure TfrmMANIFESTOS.Reabrir(const Codigo: Integer);
+begin
+  FNovo:=False;
+  sqlMaster.Close;
+  sqlMaster.ParamByName('table_pk').AsInteger:=Codigo;
+  sqlMaster.Open;
+  sqlSearchMaster.Close;
+  sqlSearchMaster.Open;
+  sqlSearchMaster.Locate('CODIGO',Codigo,[]);
+end;
+
+procedure TfrmMANIFESTOS.SalvarClick(Sender: TObject);
+var Codigo, CodigoOriginal: Integer;
+begin
+  try
+    if mm.varC_Locked='S' then raise Exception.Create(mm.MSG_APP_LOCKED);
+    if not rc_FormValidate(Self) then Exit;
+    Validar;
+    CodigoOriginal:=sqlMaster.FieldByName('CODIGO').AsInteger;
+    if sqlMaster.Connection.InTransaction then
+      raise Exception.Create('Existe outra transacao aberta na sessao. Conclua-a antes de salvar.');
+    sqlMaster.Connection.StartTransaction;
+    try
+      if FNovo then ReservarNumeracao else BloquearOriginal;
+      sqlMaster.FieldByName('LOGALTERACAO').AsString:=Copy(mm.vUserName,1,20)+' '+NovoGUID;
+      // Itens sao preparados enquanto o mestre ainda esta em edicao.
+      GravarItens;
+      sqlMaster.Post;
+      if sqlMaster.ApplyUpdates(0)<>0 then
+        raise Exception.Create('Falha ao gravar o manifesto. Nenhuma alteracao foi confirmada.');
+      if qryItens.ApplyUpdates(0)<>0 then
+        raise Exception.Create('Falha ao gravar documentos. Nenhuma alteracao foi confirmada.');
+      Codigo:=sqlMaster.FieldByName('CODIGO').AsInteger;
+      sqlMaster.Connection.Commit;
+    except
+      sqlMaster.Connection.Rollback;
+      // Apos rollback, descartar o cache aplicado para nao omitir registros numa tentativa seguinte.
+      sqlMaster.Cancel; qryItens.Cancel;
+      sqlMaster.CancelUpdates; qryItens.CancelUpdates;
+      if not FNovo then Reabrir(CodigoOriginal)
+      else begin sqlMaster.Close; qryItens.Close; FNovo:=False; end;
+      raise;
+    end;
+    sqlMaster.CommitUpdates;
+    qryItens.CommitUpdates;
+    Reabrir(Codigo);
+    pgBaseCadControl.ActivePage:=tabSearch;
+    dm_rc.rc_ShowToaster('success','Manifesto salvo.',False,'slideLeftRightFade');
+  except
+    on E: Exception do dm_rc.rc_ShowMessage(E.Message);
+  end;
+end;
+
+procedure TfrmMANIFESTOS.CancelarClick(Sender: TObject);
+begin
+  qryItens.Cancel;
+  qryItens.CancelUpdates;
+  inherited btnCancelRegClick(Sender);
+  FNovo:=False;
+  if sqlMaster.Active then MasterAfterOpen(sqlMaster);
+end;
+
+procedure TfrmMANIFESTOS.ExcluirClick(Sender: TObject);
+var Q: TFDQuery; Codigo: Integer;
+begin
+  try
+    if mm.varC_Locked='S' then raise Exception.Create(mm.MSG_APP_LOCKED);
+    if not dm_rc.rc_PermissionVerify(ed_FormOrigin_Tab.Text,'mfmestre',PT_DELETE) then Exit;
+    if sqlMaster.State in dsEditModes then
+      raise Exception.Create('Cancele a edicao antes de excluir.');
+    if sqlSearchMaster.IsEmpty then Exit;
+    Codigo:=sqlSearchMaster.FieldByName('CODIGO').AsInteger;
+    Reabrir(Codigo);
+    if not SituacaoEditavel(sqlMaster.FieldByName('CANCELADA').AsString) then
+      raise Exception.Create('Somente manifestos nao autorizados podem ser excluidos.');
+    mm.varB_Yes:=False;
+    dm_rc.rc_ShowYesNo('Excluir o manifesto '+IntToStr(sqlMaster.FieldByName('NUMERO').AsInteger)+' e seus documentos vinculados?');
+    if not mm.varB_Yes then Exit;
+    if sqlMaster.Connection.InTransaction then raise Exception.Create('Existe outra transacao aberta.');
+    sqlMaster.Connection.StartTransaction;
+    try
+      BloquearOriginal;
+      Q:=Consulta('DELETE FROM MFITENS WHERE EMPRESA=:EMP AND DOCUMENTO=:DOC AND NUMERO=:NUM');
+      try
+        Q.ParamByName('EMP').AsInteger:=mm.varI_Code_Company;
+        Q.ParamByName('DOC').Value:=sqlMaster.FieldByName('DOCUMENTO').Value;
+        Q.ParamByName('NUM').Value:=sqlMaster.FieldByName('NUMERO').Value;
+        Q.ExecSQL;
+        Q.SQL.Text:='DELETE FROM MFMESTRE WHERE "KEY"=:CHAVE AND EMPRESA=:EMP';
+        Q.ParamByName('CHAVE').Value:=sqlMaster.FieldByName('KEY').Value;
+        Q.ParamByName('EMP').AsInteger:=mm.varI_Code_Company;
+        Q.ExecSQL;
+      finally Q.Free; end;
+      sqlMaster.Connection.Commit;
+    except sqlMaster.Connection.Rollback; raise; end;
+    sqlMaster.Close; qryItens.Close;
+    sqlSearchMaster.Close; sqlSearchMaster.Open;
+    pgBaseCadControl.ActivePage:=tabSearch;
+  except on E: Exception do dm_rc.rc_ShowMessage(E.Message); end;
+end;
+
+procedure TfrmMANIFESTOS.SefazClick(Sender: TObject);
+begin
+  if sqlMaster.State in dsEditModes then
+    raise Exception.Create('Salve ou cancele a edicao antes de abrir a SEFAZ.');
+  if (not sqlMaster.Active) or sqlMaster.IsEmpty then
+    raise Exception.Create('Abra um manifesto pela pesquisa.');
+  mm.varI_Code_Documento_Controle:=sqlMaster.FieldByName('CODIGO').AsInteger;
+  frmSEFAZMANIFESTO.ShowModal;
+end;
+
+procedure TfrmMANIFESTOS.BuscarTransportadorClick(Sender: TObject);
+begin
+  ExigirEdicao;
+  mm.Seta_Busca('TRANSPORTES');
+  UniFfrmPesquisa.ShowModal(
+    procedure(Sender: TComponent; AResult: Integer)
+    var Q: TFDQuery;
+    begin
+      if AResult <> mrOK then Exit;
+      ExigirEdicao;
+      Q:=Consulta('SELECT CODIGO,NOME,CPFCNPJ FROM TRANSPORTES WHERE CODIGO=:COD');
+      try
+        Q.ParamByName('COD').AsInteger:=StrToInt(mm.varC_codigo_busca);
+        Q.Open;
+        if Q.IsEmpty then raise Exception.Create('Transportador nao encontrado.');
+        sqlMaster.FieldByName('TRANSPORTADORA').Value:=Q.FieldByName('CODIGO').Value;
+        sqlMaster.FieldByName('NOMETRANSPORTADORA').Value:=Q.FieldByName('NOME').Value;
+        sqlMaster.FieldByName('CPFCNPJ').Value:=Q.FieldByName('CPFCNPJ').Value;
+      finally Q.Free; end;
+    end);
+end;
+
+initialization
+  RegisterClass(TfrmMANIFESTOS);
+end.
