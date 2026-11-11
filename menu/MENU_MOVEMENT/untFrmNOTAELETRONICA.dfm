@@ -93,19 +93,15 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
         inherited btnCalcReg: TUniBitBtn
           OnClick = btnCalcReg2Click
         end
-        inherited btntransp: TUniBitBtn
-          OnClick = btntransp2Click
-        end
-        inherited btnvendedor: TUniBitBtn
-          OnClick = btnvendedorClick
-        end
       end
     end
     inherited paBaseCadControl: TUniContainerPanel
       inherited pgBaseCadControl: TUniPageControl
         ActivePage = tabRegister
         inherited tabSearch: TUniTabSheet
+          ExplicitLeft = 0
           ExplicitTop = 24
+          ExplicitWidth = 256
           ExplicitHeight = 965
           inherited paBaseRegSearch: TUniContainerPanel
             Height = 965
@@ -196,37 +192,45 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
           ExplicitWidth = 1361
           ExplicitHeight = 965
           inherited paBaseRegData1: TUniContainerPanel
-            ScrollHeight = 965
+            Height = 963
+            ScrollHeight = 963
             ScrollWidth = 1361
             object UniScrollBox2: TUniScrollBox
               AlignWithMargins = True
               Left = 3
               Top = 3
               Width = 1355
-              Height = 959
+              Height = 957
               Hint = ''
               Align = alClient
               TabOrder = 0
+              ExplicitHeight = 959
               object UniPageControlnota: TUniPageControl
                 Left = 0
                 Top = 0
                 Width = 1353
-                Height = 957
+                Height = 955
                 Hint = ''
                 ActivePage = UniTabSheetgeral
                 Align = alClient
                 TabOrder = 0
+                ExplicitHeight = 957
                 object UniTabSheetgeral: TUniTabSheet
                   Hint = ''
                   Caption = 'Geral'
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 256
+                  ExplicitHeight = 128
                   object UniScrollBox3: TUniScrollBox
                     Left = 0
                     Top = 0
                     Width = 1345
-                    Height = 929
+                    Height = 925
                     Hint = ''
                     Align = alClient
                     TabOrder = 0
+                    ExplicitHeight = 929
                     ScrollHeight = 847
                     ScrollWidth = 976
                     object rcBlock400: TUniContainerPanel
@@ -250,6 +254,10 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                         object UniTabSheetProdutos: TUniTabSheet
                           Hint = ''
                           Caption = 'Produtos'
+                          ExplicitLeft = 0
+                          ExplicitTop = 0
+                          ExplicitWidth = 256
+                          ExplicitHeight = 128
                           object UniDBGridprodutos: TUniDBGrid
                             Left = 0
                             Top = 0
@@ -450,6 +458,10 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                         object UniTabSheettransporte: TUniTabSheet
                           Hint = ''
                           Caption = 'Transporte'
+                          ExplicitLeft = 0
+                          ExplicitTop = 0
+                          ExplicitWidth = 256
+                          ExplicitHeight = 128
                           object rcBlock270: TUniContainerPanel
                             Left = -9
                             Top = 3
@@ -908,9 +920,13 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                         object UniTabSheetreferencia: TUniTabSheet
                           Hint = ''
                           Caption = 'Refer'#234'ncia'
+                          ExplicitLeft = 0
+                          ExplicitTop = 0
+                          ExplicitWidth = 256
+                          ExplicitHeight = 128
                           DesignSize = (
                             939
-                            340)
+                            338)
                           object rcBlock860: TUniContainerPanel
                             Left = 3
                             Top = 3
@@ -981,9 +997,13 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                         object UniTabSheetdetalhesnota: TUniTabSheet
                           Hint = ''
                           Caption = 'Detalhes Nota'
+                          ExplicitLeft = 0
+                          ExplicitTop = 0
+                          ExplicitWidth = 256
+                          ExplicitHeight = 128
                           DesignSize = (
                             939
-                            340)
+                            338)
                           object rcBlock370: TUniContainerPanel
                             Left = -4
                             Top = 6
@@ -1058,7 +1078,7 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                             Top = 91
                             Width = 150
                             Height = 48
-                            Hint = '[[cols:xs-12 sm-12 md-5]]'
+                            Hint = '[[cols:xs-12 sm-12 md-3]]'
                             ParentColor = False
                             TabOrder = 2
                             DesignSize = (
@@ -1075,6 +1095,7 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                               DataSource = dsMaster
                               Anchors = [akLeft, akTop, akRight]
                               TabOrder = 1
+                              OnExit = UniDBEdit13Exit
                             end
                             object UniLabel70: TUniLabel
                               Left = 2
@@ -1083,6 +1104,50 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                               Height = 15
                               Hint = ''
                               Caption = 'N'#186' Pedido'
+                              ParentFont = False
+                              Font.Height = -13
+                              Font.Name = 'Calibri'
+                              TabOrder = 2
+                            end
+                          end
+                          object rcBlock831: TUniContainerPanel
+                            Tag = 1
+                            Left = 196
+                            Top = 91
+                            Width = 150
+                            Height = 48
+                            Hint = '[[cols:xs-12 sm-12 md-3]]'
+                            ParentColor = False
+                            TabOrder = 5
+                            DesignSize = (
+                              150
+                              48)
+                            object UniComboBoxtipoorigem: TUniComboBox
+                              AlignWithMargins = True
+                              Left = 4
+                              Top = 19
+                              Width = 144
+                              Height = 29
+                              Hint = ''
+                              Style = csDropDownList
+                              Text = ''
+                              Items.Strings = (
+                                ''
+                                'Pedido'
+                                'Or'#195#167'amento'
+                                'Requisi'#195#167#195#163'o')
+                              Anchors = [akLeft, akTop, akRight]
+                              TabOrder = 1
+                              IconItems = <>
+                              OnChange = UniComboBoxtipoorigemChange
+                            end
+                            object UniLabel79: TUniLabel
+                              Left = 2
+                              Top = 0
+                              Width = 80
+                              Height = 15
+                              Hint = ''
+                              Caption = 'Tipo Emiss'#195#163'o'
                               ParentFont = False
                               Font.Height = -13
                               Font.Name = 'Calibri'
@@ -1141,6 +1206,10 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                         object UniTabSheet1: TUniTabSheet
                           Hint = ''
                           Caption = 'Duplicatas'
+                          ExplicitLeft = 0
+                          ExplicitTop = 0
+                          ExplicitWidth = 256
+                          ExplicitHeight = 128
                           object rcBlock800: TUniContainerPanel
                             Tag = 1
                             Left = 124
@@ -2698,6 +2767,10 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                 object UniTabSheetfaturamento: TUniTabSheet
                   Hint = ''
                   Caption = 'Faturamento'
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 256
+                  ExplicitHeight = 128
                   object UniScrollBox5: TUniScrollBox
                     Left = 0
                     Top = 0
@@ -2708,7 +2781,7 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
                     TabOrder = 0
                     DesignSize = (
                       1343
-                      927)
+                      923)
                     ScrollHeight = 386
                     ScrollWidth = 847
                     object rcBlock430: TUniContainerPanel
@@ -3525,11 +3598,6 @@ inherited frmNOTAELETRONICA: TfrmNOTAELETRONICA
               ScreenMask.Target = Owner
             end
           end
-        end
-      end
-      inherited paSearchFiltersCustom: TUniPanel
-        inherited sboxSearchFiltersCustom: TUniScrollBox
-          ScrollHeight = 33
         end
       end
     end
