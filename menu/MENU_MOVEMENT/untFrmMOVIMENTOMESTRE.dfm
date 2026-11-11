@@ -176,8 +176,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
         end
         inherited tabRegister: TUniTabSheet
           inherited paBaseRegData1: TUniContainerPanel
-            ScrollHeight = 965
-            ScrollWidth = 1361
+            AutoScroll = False
             object UniScrollBox2: TUniScrollBox
               AlignWithMargins = True
               Left = 15
@@ -193,179 +192,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 1329
                 957)
               ScrollHeight = 714
-              ScrollWidth = 946
-              object rcBlock465: TUniContainerPanel
-                Left = 3
-                Top = 0
-                Width = 300
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-12]]'
-                Visible = False
-                ParentColor = False
-                TabOrder = 18
-                DesignSize = (
-                  300
-                  48)
-                object UniLabelTipoDocumento: TUniLabel
-                  Left = 0
-                  Top = 0
-                  Width = 105
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Tipo de Documento'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 0
-                end
-                object UniComboTipoDocumento: TUniComboBox
-                  Left = 0
-                  Top = 18
-                  Width = 300
-                  Height = 29
-                  Hint = ''
-                  Style = csDropDownList
-                  Text = ''
-                  Items.Strings = (
-                    'Or'#231'amento'
-                    'Pedido'
-                    'Requisi'#231#227'o')
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 1
-                  IconItems = <>
-                  OnChange = UniComboTipoDocumentoChange
-                end
-              end
-              object rcBlock475: TUniContainerPanel
-                Tag = 1
-                Left = 258
-                Top = 4
-                Width = 241
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-5]]'
-                ParentColor = False
-                Anchors = [akLeft, akTop, akRight]
-                TabOrder = 2
-                DesignSize = (
-                  241
-                  48)
-                object UniLabel5: TUniLabel
-                  Left = 0
-                  Top = 0
-                  Width = 39
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Pessoa'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 1
-                end
-                object edLkpPESSOAS: TUniDBEdit
-                  Left = 1
-                  Top = 18
-                  Width = 236
-                  Height = 29
-                  Hint = 
-                    '[['#13#10'NOME PESSOA |'#13#10'lkpfilter-empty:Selecione uma Pessoa<translat' +
-                    'e>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'valid:blank |'#13#10'v' +
-                    'alid-required:top-in |'#13#10']]'#13#10#13#10
-                  CharCase = ecUpperCase
-                  Anchors = [akLeft, akTop, akRight]
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 2
-                  Color = clInfoBk
-                  ReadOnly = True
-                  InputType = 'text'
-                  OnClick = edLkpPESSOASClick
-                  OnExit = edLkpPESSOASExit
-                end
-              end
-              object rcBlock480: TUniContainerPanel
-                Tag = 1
-                Left = 535
-                Top = 3
-                Width = 116
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-2]]'
-                ParentColor = False
-                TabOrder = 1
-                DesignSize = (
-                  116
-                  48)
-                object UniLabel4: TUniLabel
-                  Left = 0
-                  Top = 0
-                  Width = 46
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Emiss'#227'o'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 1
-                end
-                object UniDBDateTimePickeremissao: TUniDBDateTimePicker
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 18
-                  Width = 103
-                  Height = 29
-                  Hint = ''
-                  DataField = 'EMISSAO'
-                  DataSource = dsMaster
-                  DateTime = 44560.000000000000000000
-                  DateFormat = 'dd/MM/yyyy'
-                  TimeFormat = 'HH:mm:ss'
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 2
-                  ClientEvents.ExtEvents.Strings = (
-                    
-                      'afterrender=function afterrender(sender, eOpts)'#13#10'{'#13#10' /* Mascara ' +
-                      '"99/99/9999" para campo Data e cont'#233'udo vazio qdo n'#227'o tem data *' +
-                      '/'#13#10' $("#"+sender.inputEl.id).inputmask("99/99/9999",{placeholder' +
-                      ':"  /  /   "});'#13#10'}')
-                end
-              end
-              object rcBlock470: TUniContainerPanel
-                Tag = 1
-                Left = 3
-                Top = 4
-                Width = 249
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-3]]'
-                ParentColor = False
-                TabOrder = 0
-                DesignSize = (
-                  249
-                  48)
-                object UniComboBoxparaop: TUniComboBox
-                  Left = 0
-                  Top = 18
-                  Width = 249
-                  Height = 29
-                  Hint = ''
-                  Style = csDropDownList
-                  Text = ''
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 1
-                  IconItems = <>
-                end
-                object UniLabel21: TUniLabel
-                  Left = 0
-                  Top = 0
-                  Width = 81
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Tipo Opera'#231#227'o'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 2
-                end
-              end
+              ScrollWidth = 976
               object rcBlock510: TUniContainerPanel
                 Tag = 1
                 Left = 3
@@ -374,15 +201,16 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 48
                 Hint = '[[cols:xs-12 sm-12 md-5]]'
                 ParentColor = False
-                TabOrder = 3
+                TabOrder = 0
+                TabStop = False
                 DesignSize = (
                   187
                   48)
                 object UniEditcidade: TUniEdit
                   AlignWithMargins = True
-                  Left = 1
+                  Left = 7
                   Top = 18
-                  Width = 182
+                  Width = 178
                   Height = 29
                   Hint = ''
                   Margins.Right = 5
@@ -393,6 +221,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                   Font.Name = 'Calibri'
                   Anchors = [akLeft, akTop, akRight]
                   TabOrder = 1
+                  TabStop = False
                   ReadOnly = True
                 end
                 object UniLabel7: TUniLabel
@@ -414,9 +243,10 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Top = 58
                 Width = 172
                 Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-1]]'
+                Hint = '[[cols:xs-12 sm-12 md-2]]'
                 ParentColor = False
-                TabOrder = 4
+                TabOrder = 1
+                TabStop = False
                 DesignSize = (
                   172
                   48)
@@ -435,6 +265,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                   Font.Name = 'Calibri'
                   Anchors = [akLeft, akTop, akRight]
                   TabOrder = 1
+                  TabStop = False
                   ReadOnly = True
                 end
                 object UniLabel9: TUniLabel
@@ -450,88 +281,49 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                   TabOrder = 2
                 end
               end
-              object rcBlock530: TUniContainerPanel
-                Tag = 1
-                Left = 382
-                Top = 58
-                Width = 99
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-1]]'
-                ParentColor = False
-                TabOrder = 5
-                DesignSize = (
-                  99
-                  48)
-                object UniButtonDbEditcodigocondicao: TUniButtonDbEdit
-                  Tag = 1
-                  AlignWithMargins = True
-                  Left = 2
-                  Top = 18
-                  Width = 97
-                  Height = 29
-                  Hint = ''
-                  DataField = 'CONDICAO'
-                  DataSource = dsMaster
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 1
-                  Color = clInfoBk
-                  OnExit = UniButtonDbEditcodigocondicaoExit
-                  OnButtonClick = UniButtonDbEditcodigocondicaoButtonClick
-                  IconCls = 'search'
-                end
-                object UniLabel10: TUniLabel
-                  Left = 0
-                  Top = 0
-                  Width = 52
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Condi'#231#227'o'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 2
-                end
-              end
               object rcBlock540: TUniContainerPanel
                 Tag = 1
-                Left = 558
-                Top = 57
+                Left = 374
+                Top = 56
                 Width = 267
                 Height = 48
                 Hint = '[[cols:xs-12 sm-12 md-5]]'
                 ParentColor = False
-                TabOrder = 6
+                TabOrder = 4
                 DesignSize = (
                   267
                   48)
-                object UniEditdescricaocondicao: TUniEdit
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 19
-                  Width = 264
-                  Height = 29
-                  Hint = ''
-                  Margins.Right = 5
-                  CharCase = ecUpperCase
-                  Text = ''
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 1
-                  ReadOnly = True
-                end
                 object UniLabel11: TUniLabel
                   Left = 3
                   Top = 1
-                  Width = 110
+                  Width = 132
                   Height = 15
                   Hint = ''
-                  Caption = 'Descri'#231#227'o Condi'#231#227'o'
+                  Caption = 'Condi'#231#227'o de Pagamento'
+                  ParentFont = False
+                  Font.Height = -13
+                  Font.Name = 'Calibri'
+                  TabOrder = 1
+                end
+                object edLkpCONDICOES: TUniDBEdit
+                  Left = 2
+                  Top = 19
+                  Width = 263
+                  Height = 29
+                  Hint = 
+                    '[['#13#10'DESCRICAO CONDICAO @60 |'#13#10'lkpfilter-empty:Selecione um Pagam' +
+                    'ento<translate>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'val' +
+                    'id:blank |'#13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
+                  CharCase = ecUpperCase
+                  Anchors = [akLeft, akTop, akRight]
                   ParentFont = False
                   Font.Height = -13
                   Font.Name = 'Calibri'
                   TabOrder = 2
+                  Color = clInfoBk
+                  ReadOnly = True
+                  InputType = 'text'
+                  OnClick = edLkpCONDICOESClick
                 end
               end
               object rcBlock590: TUniContainerPanel
@@ -541,7 +333,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 211
                 Hint = '[['#13#10'cols:xs-12 sm-12 md-12'#13#10']]'
                 ParentColor = False
-                TabOrder = 9
+                TabOrder = 5
                 object UniDBGridprodutos: TUniDBGrid
                   AlignWithMargins = True
                   Left = 3
@@ -661,7 +453,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 160
                 Hint = '[[cols:xs-12 sm-12 md-12]]'
                 ParentColor = False
-                TabOrder = 7
+                TabOrder = 2
                 object rcBlock600: TUniContainerPanel
                   Tag = 1
                   Left = 3
@@ -836,7 +628,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 120
                 Hint = '[[cols:xs-12 sm-12 md-4]]'
                 ParentColor = False
-                TabOrder = 8
+                TabOrder = 3
                 DesignSize = (
                   223
                   120)
@@ -959,7 +751,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 80
                 Hint = '[[cols:xs-12 sm-12 md-3]]'
                 ParentColor = False
-                TabOrder = 10
+                TabOrder = 6
                 DesignSize = (
                   150
                   80)
@@ -998,7 +790,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 80
                 Hint = '[[cols:xs-12 sm-12 md-3]]'
                 ParentColor = False
-                TabOrder = 11
+                TabOrder = 7
                 DesignSize = (
                   150
                   80)
@@ -1037,7 +829,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 80
                 Hint = '[[cols:xs-12 sm-12 md-3]]'
                 ParentColor = False
-                TabOrder = 12
+                TabOrder = 8
                 DesignSize = (
                   150
                   80)
@@ -1073,7 +865,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 80
                 Hint = '[[cols:xs-12 sm-12 md-3]]'
                 ParentColor = False
-                TabOrder = 13
+                TabOrder = 9
                 DesignSize = (
                   134
                   80)
@@ -1121,7 +913,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 80
                 Hint = '[[cols:xs-12 sm-12 md-3]]'
                 ParentColor = False
-                TabOrder = 14
+                TabOrder = 10
                 DesignSize = (
                   134
                   80)
@@ -1149,53 +941,10 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                   TabOrder = 2
                 end
               end
-              object rcBlock485: TUniContainerPanel
-                Tag = 1
-                Left = 817
-                Top = 3
-                Width = 94
-                Height = 48
-                Hint = '[[cols:xs-12 sm-12 md-2]]'
-                ParentColor = False
-                TabOrder = 15
-                DesignSize = (
-                  94
-                  48)
-                object UniLabel8: TUniLabel
-                  Left = 3
-                  Top = 0
-                  Width = 43
-                  Height = 15
-                  Hint = ''
-                  Caption = 'Numero'
-                  ParentFont = False
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  TabOrder = 1
-                end
-                object edCodigo: TUniDBEdit
-                  Left = 3
-                  Top = 18
-                  Width = 94
-                  Height = 29
-                  Hint = ''
-                  DataField = 'NUMERO'
-                  DataSource = dsMaster
-                  Anchors = [akLeft, akTop, akRight]
-                  ParentFont = False
-                  Font.Color = clWhite
-                  Font.Height = -13
-                  Font.Name = 'Calibri'
-                  Font.Style = [fsBold]
-                  TabOrder = 2
-                  Color = clGray
-                  ReadOnly = True
-                end
-              end
               object UniButtonDbEditcodigopessoas: TUniEdit
                 AlignWithMargins = True
-                Left = 683
-                Top = 22
+                Left = 949
+                Top = 258
                 Width = 55
                 Height = 29
                 Hint = ''
@@ -1207,7 +956,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Font.Height = -13
                 Font.Name = 'Calibri'
                 Anchors = [akLeft, akTop, akRight]
-                TabOrder = 16
+                TabOrder = 11
                 ReadOnly = True
               end
               object rcBlock550: TUniContainerPanel
@@ -1218,7 +967,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Height = 120
                 Hint = '[[cols:xs-12 sm-12 md-8]]'
                 ParentColor = False
-                TabOrder = 17
+                TabOrder = 12
                 object UniDBMemoobservacao: TUniDBMemo
                   AlignWithMargins = True
                   Left = 3
@@ -1237,6 +986,202 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                       'e) {if (e.key=='#39'Enter'#39') {e.stopPropagation()}}'#13#10'    ); '#13#10'}')
                 end
               end
+              object rcBlock450: TUniContainerPanel
+                Left = 20
+                Top = -4
+                Width = 956
+                Height = 63
+                Hint = '[[cols:xs-12 sm-12 md-12]]'
+                Margins.Right = 100
+                ParentColor = False
+                TabOrder = 13
+                DesignSize = (
+                  956
+                  63)
+                object rcBlock465: TUniContainerPanel
+                  Left = 27
+                  Top = 8
+                  Width = 212
+                  Height = 48
+                  Hint = '[[cols:xs-12 sm-12 md-3]]'
+                  Visible = False
+                  ParentColor = False
+                  TabOrder = 1
+                  DesignSize = (
+                    212
+                    48)
+                  object UniLabelTipoDocumento: TUniLabel
+                    Left = 0
+                    Top = 0
+                    Width = 105
+                    Height = 15
+                    Hint = ''
+                    Caption = 'Tipo de Documento'
+                    ParentFont = False
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    TabOrder = 0
+                  end
+                  object UniComboTipoDocumento: TUniComboBox
+                    Left = 0
+                    Top = 18
+                    Width = 212
+                    Height = 29
+                    Hint = ''
+                    Style = csDropDownList
+                    Text = ''
+                    Items.Strings = (
+                      'Or'#231'amento'
+                      'Venda'
+                      'Nota')
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 1
+                    IconItems = <>
+                    OnChange = UniComboTipoDocumentoChange
+                    ExplicitWidth = 300
+                  end
+                end
+                object rcBlock475: TUniContainerPanel
+                  Tag = 1
+                  Left = 264
+                  Top = 8
+                  Width = 241
+                  Height = 48
+                  Hint = '[[cols:xs-12 sm-12 md-5]]'
+                  ParentColor = False
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 2
+                  DesignSize = (
+                    241
+                    48)
+                  object UniLabel5: TUniLabel
+                    Left = 0
+                    Top = 0
+                    Width = 39
+                    Height = 15
+                    Hint = ''
+                    Caption = 'Pessoa'
+                    ParentFont = False
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    TabOrder = 1
+                  end
+                  object edLkpPESSOAS: TUniDBEdit
+                    Left = 1
+                    Top = 18
+                    Width = 236
+                    Height = 29
+                    Hint = 
+                      '[['#13#10'NOME PESSOA @60 |'#13#10'lkpfilter-empty:Selecione uma Pessoa<tran' +
+                      'slate>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'valid:blank ' +
+                      '|'#13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
+                    CharCase = ecUpperCase
+                    Anchors = [akLeft, akTop, akRight]
+                    ParentFont = False
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    TabOrder = 2
+                    Color = clInfoBk
+                    ReadOnly = True
+                    InputType = 'text'
+                    OnClick = edLkpPESSOASClick
+                    OnExit = edLkpPESSOASExit
+                  end
+                end
+                object rcBlock480: TUniContainerPanel
+                  Tag = 1
+                  Left = 511
+                  Top = 7
+                  Width = 116
+                  Height = 48
+                  Hint = '[[cols:xs-12 sm-12 md-2]]'
+                  ParentColor = False
+                  TabOrder = 3
+                  DesignSize = (
+                    116
+                    48)
+                  object UniLabel4: TUniLabel
+                    Left = 0
+                    Top = 0
+                    Width = 46
+                    Height = 15
+                    Hint = ''
+                    Caption = 'Emiss'#227'o'
+                    ParentFont = False
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    TabOrder = 1
+                  end
+                  object UniDBDateTimePickeremissao: TUniDBDateTimePicker
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 18
+                    Width = 103
+                    Height = 29
+                    Hint = ''
+                    DataField = 'EMISSAO'
+                    DataSource = dsMaster
+                    DateTime = 44560.000000000000000000
+                    DateFormat = 'dd/MM/yyyy'
+                    TimeFormat = 'HH:mm:ss'
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 2
+                    ClientEvents.ExtEvents.Strings = (
+                      
+                        'afterrender=function afterrender(sender, eOpts)'#13#10'{'#13#10' /* Mascara ' +
+                        '"99/99/9999" para campo Data e cont'#233'udo vazio qdo n'#227'o tem data *' +
+                        '/'#13#10' $("#"+sender.inputEl.id).inputmask("99/99/9999",{placeholder' +
+                        ':"  /  /   "});'#13#10'}')
+                  end
+                end
+                object rcBlock485: TUniContainerPanel
+                  Tag = 1
+                  Left = 657
+                  Top = 8
+                  Width = 148
+                  Height = 48
+                  Hint = '[[cols:xs-12 sm-12 md-2]]'
+                  Margins.Right = 15
+                  ParentColor = False
+                  TabOrder = 4
+                  TabStop = False
+                  DesignSize = (
+                    148
+                    48)
+                  object UniLabel8: TUniLabel
+                    Left = 3
+                    Top = 0
+                    Width = 43
+                    Height = 15
+                    Hint = ''
+                    Caption = 'Numero'
+                    ParentFont = False
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    TabOrder = 1
+                  end
+                  object edCodigo: TUniDBEdit
+                    Left = 3
+                    Top = 18
+                    Width = 137
+                    Height = 29
+                    Hint = ''
+                    Margins.Right = 15
+                    DataField = 'NUMERO'
+                    DataSource = dsMaster
+                    Anchors = [akLeft, akTop, akRight]
+                    ParentFont = False
+                    Font.Color = clWhite
+                    Font.Height = -13
+                    Font.Name = 'Calibri'
+                    Font.Style = [fsBold]
+                    TabOrder = 2
+                    TabStop = False
+                    Color = clGray
+                    ReadOnly = True
+                  end
+                end
+              end
             end
           end
         end
@@ -1249,11 +1194,14 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
         inherited UniScrollBox1: TUniScrollBox
           Top = 42
           ExplicitTop = 42
-          ScrollHeight = 746
+          ScrollHeight = 815
           ScrollWidth = 164
           inherited paSearchFilter1: TUniContainerPanel
             Height = 177
             ExplicitHeight = 177
+            DesignSize = (
+              275
+              177)
             inherited paSearchOp1: TUniContainerPanel
               Top = 108
               ExplicitTop = 108
@@ -1263,6 +1211,9 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
               Height = 68
               ExplicitTop = 32
               ExplicitHeight = 68
+              DesignSize = (
+                275
+                68)
               inherited cbxSearchCRUDField1_Fields: TUniComboBox
                 Left = 164
                 Top = 3
@@ -1290,6 +1241,47 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
           inherited paSearchBtn: TUniContainerPanel
             inherited btnSearchCRUD: TUniBitBtn
               ScreenMask.Target = Owner
+            end
+          end
+          object pnlFiltroTipoDocumento: TUniContainerPanel
+            Left = 10
+            Top = 760
+            Width = 275
+            Height = 55
+            Hint = ''
+            ParentColor = False
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 10
+            DesignSize = (
+              275
+              55)
+            object lblFiltroTipoDocumento: TUniLabel
+              Left = 0
+              Top = 0
+              Width = 105
+              Height = 15
+              Hint = ''
+              Caption = 'Tipo de Documento'
+              TabOrder = 0
+            end
+            object cbFiltroTipoDocumento: TUniComboBox
+              Left = 0
+              Top = 19
+              Width = 275
+              Height = 29
+              Hint = ''
+              Style = csDropDownList
+              Text = 'Todos'
+              Items.Strings = (
+                'Todos'
+                'Or'#231'amento'
+                'Venda'
+                'Nota')
+              ItemIndex = 0
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 1
+              IconItems = <>
+              OnChange = cbFiltroTipoDocumentoChange
             end
           end
         end
