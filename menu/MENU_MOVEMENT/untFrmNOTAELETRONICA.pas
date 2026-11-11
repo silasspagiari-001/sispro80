@@ -1,4 +1,4 @@
-﻿unit untFrmNOTAELETRONICA;
+unit untFrmNOTAELETRONICA;
 
 interface
 
@@ -451,6 +451,9 @@ type
     UniLabel44: TUniLabel;
     rcBlock830: TUniContainerPanel;
     UniDBEdit13: TUniDBEdit;
+    rcBlock831: TUniContainerPanel;
+    UniComboBoxtipoorigem: TUniComboBox;
+    UniLabel79: TUniLabel;
     UniLabel70: TUniLabel;
     rcBlock840: TUniContainerPanel;
     UniDBEdit22: TUniDBEdit;
@@ -573,9 +576,8 @@ type
     procedure RecibodeRetirada1Click(Sender: TObject);
     procedure t1Click(Sender: TObject);
     procedure V2Click(Sender: TObject);
-    procedure btnvendedorClick(Sender: TObject);
-    procedure AjustaBtnVendedor;
-    procedure UniFormResize(Sender: TObject);
+    procedure UniDBEdit13Exit(Sender: TObject);
+    procedure UniComboBoxtipoorigemChange(Sender: TObject);
     procedure UniComboBoxparaopChange(Sender: TObject);
     procedure UniDBFormattedNumberEditFRETEExit(Sender: TObject);
     procedure UniDBGridprodutosMouseDown(Sender: TObject; Button: TMouseButton;
@@ -622,6 +624,8 @@ type
 
   procedure carregalote(lote:string;produto:integer);
   procedure AtualizaPedido(const Numero, Documento: Integer);
+  procedure BuscaOrigemPedido;
+  function VerificaOrigemParaEmitir: Boolean;
 
   procedure  carregaMovimento_comissao(const pnumero,pdocumento,pempresa:integer);
   procedure  EntregaFuturaCRUD(acao:string);
@@ -652,7 +656,7 @@ uses mkm_validate, mkm_func_web, System.TypInfo, MainModule, System.DateUtils, u
   untfrmDeclaracaoretirada, ServerModule, uconsts, Vcl.Clipbrd,
   untFrmDETALHESITENSNOTA, untFrmTRANSPORTADORAMOVIMENTO, untFrmLookUp,
   untFrmCADCHEQUEMOVIMENTO, untFrmTELAMOVIMENTOBOLETOS, untFrmMOVIMENTOVENDEDOR,
-  untFrmENVIOEMAIL, untFrmDUPLICANOTA,untPesquisaGenerica,untFrmFINANCEIRONOTA;
+  untFrmENVIOEMAIL, untFrmDUPLICANOTA,untPesquisaGenerica,untFrmFINANCEIRONOTA, untFrmPagamentoNota;
 
 type
   TNotaGridAccess = class(TUniDBGrid);
@@ -737,6 +741,143 @@ begin
       'Pedido faturado pela NF-e: ' + sqlMaster.FindField('NUMERO').AsString;
     dm_rc.FDQryMvmestre.FindField('FECHAMENTO_STATUS').AsString := 'Finalizado';
     dm_rc.FDQryMvmestre.Post;
+  end;
+end;
+
+procedure TfrmNOTAELETRONICA.BuscaOrigemPedido;
+var
+  codigoAtual: Integer;
+  i: Integer;
+  Cmp: String;
+begin
+  if not (dsMaster.State in [dsEdit, dsInsert]) then Exit;
+
+  if (sqlMaster.FindField('PEDIDO').AsString = '') and (UniComboBoxtipoorigem.Text = '') then
+    Exit;
+
+  if sqlMaster.FindField('PEDIDO').AsString = '' then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'INFORME O NÚMERO DA ORIGEM', 'warning');
+    Exit;
+  end;
+
+  if UniComboBoxtipoorigem.Text = '' then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'SELECIONE O TIPO DA ORIGEM', 'warning');
+    Exit;
+  end;
+
+  codigoAtual := 0;
+  if sqlMaster.State = dsEdit then
+    codigoAtual := sqlMaster.FindField('CODIGO').AsInteger;
+
+  // busca a origem (pedido/orçamento/requisição = outro registro do MVMESTRE)
+  if not SqlPesquisa(' select codigo from mvmestre where numero = ' +
+                      QuotedStr(sqlMaster.FindField('PEDIDO').AsString) +
+                      ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                      ' and codigo <> ' + IntToStr(codigoAtual)) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'ORIGEM NÃO CADASTRADA', 'warning');
+    Exit;
+  end;
+
+  // origem já emitida por outra nota?
+  if SqlPesquisa(' select codigo from mvmestre where pedido = ' +
+                    QuotedStr(sqlMaster.FindField('PEDIDO').AsString) +
+                    ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                    ' and cancelada <> ' + QuotedStr('C') +
+                    ' and codigo <> ' + IntToStr(codigoAtual)) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'ORIGEM JÁ EMITIDA POR OUTRA NOTA', 'error');
+    Exit;
+  end;
+
+  // carrega os dados da origem
+  if SqlPesquisa(' select documento, serie, pessoa, condicao, funcionario, ' +
+                  'comissaofuncionario, vlrdescontos, portador, transportadora, trafrete, ' +
+                  'traespecie, tramarca, trapesobruto, trapesoliquido, traquantidade ' +
+                  'from mvmestre where numero = ' + QuotedStr(sqlMaster.FindField('PEDIDO').AsString) +
+                  ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                  ' and codigo <> ' + IntToStr(codigoAtual)) then
+  begin
+    sqlMaster.FindField('PEDIDO_DOCUMENTO').AsString      := dm_rc.sqlBuscas.FindField('DOCUMENTO').AsString;
+    sqlMaster.FindField('PEDIDO_SERIE').AsString          := dm_rc.sqlBuscas.FindField('SERIE').AsString;
+    sqlMaster.FindField('PESSOA').AsInteger               := dm_rc.sqlBuscas.FindField('PESSOA').AsInteger;
+    sqlMaster.FindField('CONDICAO').AsInteger             := dm_rc.sqlBuscas.FindField('CONDICAO').AsInteger;
+    sqlMaster.FindField('FUNCIONARIO').AsInteger          := dm_rc.sqlBuscas.FindField('FUNCIONARIO').AsInteger;
+    sqlMaster.FindField('COMISSAOFUNCIONARIO').AsFloat   := dm_rc.sqlBuscas.FindField('COMISSAOFUNCIONARIO').AsFloat;
+    sqlMaster.FindField('VLRDESCONTOS').AsFloat           := dm_rc.sqlBuscas.FindField('VLRDESCONTOS').AsFloat;
+    sqlMaster.FindField('TRAFRETE').AsString              := dm_rc.sqlBuscas.FindField('TRAFRETE').AsString;
+    sqlMaster.FindField('PORTADOR').AsInteger             := dm_rc.sqlBuscas.FindField('PORTADOR').AsInteger;
+    sqlMaster.FindField('TRANSPORTADORA').AsInteger       := dm_rc.sqlBuscas.FindField('TRANSPORTADORA').AsInteger;
+    sqlMaster.FindField('TRAESPECIE').AsString            := dm_rc.sqlBuscas.FindField('TRAESPECIE').AsString;
+    sqlMaster.FindField('TRAMARCA').AsString              := dm_rc.sqlBuscas.FindField('TRAMARCA').AsString;
+    sqlMaster.FindField('TRAPESOBRUTO').AsFloat           := dm_rc.sqlBuscas.FindField('TRAPESOBRUTO').AsFloat;
+    sqlMaster.FindField('TRAPESOLIQUIDO').AsFloat         := dm_rc.sqlBuscas.FindField('TRAPESOLIQUIDO').AsFloat;
+    sqlMaster.FindField('TRAQUANTIDADE').AsFloat          := dm_rc.sqlBuscas.FindField('TRAQUANTIDADE').AsFloat;
+
+    // preenche os dados do cliente
+    if sqlMaster.FindField('PESSOA').AsInteger > 0 then
+    begin
+      if SqlPesquisa('SELECT * FROM PESSOAS WHERE CODIGO = ' + IntToStr(sqlMaster.FindField('PESSOA').AsInteger)) then
+      begin
+        UniEditcpfcnpj.Text     := dm_rc.sqlBuscas.FindField('CPFCNPJ').AsString;
+        UniEditinscricao.Text   := dm_rc.sqlBuscas.FindField('INSCRICAO').AsString;
+        UniEditrenasem.Text     := dm_rc.sqlBuscas.FindField('RENASEM').AsString;
+        FDQrypessoas.Close;
+        for i := 0 to FDQrypessoas.Params.Count - 1 do
+        begin
+          Cmp := FDQrypessoas.Params[i].Name;
+          FDQrypessoas.Params[i].Value := sqlMaster.FieldByName(Cmp).Value;
+        end;
+        FDQrypessoas.Open;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmNOTAELETRONICA.UniDBEdit13Exit(Sender: TObject);
+begin
+  BuscaOrigemPedido;
+end;
+
+procedure TfrmNOTAELETRONICA.UniComboBoxtipoorigemChange(Sender: TObject);
+begin
+  if (UniComboBoxtipoorigem.ItemIndex > 0) and
+     (dsMaster.State in [dsEdit, dsInsert]) and
+     (sqlMaster.FindField('PEDIDO').AsString <> '') then
+    BuscaOrigemPedido;
+end;
+
+function TfrmNOTAELETRONICA.VerificaOrigemParaEmitir: Boolean;
+var
+  codigoAtual: Integer;
+begin
+  Result := True;
+  if sqlMaster.FindField('PEDIDO').AsString = '' then Exit;
+
+  codigoAtual := 0;
+  if sqlMaster.State = dsEdit then
+    codigoAtual := sqlMaster.FindField('CODIGO').AsInteger;
+
+  if not SqlPesquisa(' select codigo from mvmestre where numero = ' +
+                      QuotedStr(sqlMaster.FindField('PEDIDO').AsString) +
+                      ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                      ' and codigo <> ' + IntToStr(codigoAtual)) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'ORIGEM NÃO CADASTRADA', 'error');
+    Result := False;
+    Exit;
+  end;
+
+  if SqlPesquisa(' select codigo from mvmestre where pedido = ' +
+                    QuotedStr(sqlMaster.FindField('PEDIDO').AsString) +
+                    ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                    ' and cancelada <> ' + QuotedStr('C') +
+                    ' and codigo <> ' + IntToStr(codigoAtual)) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'ORIGEM JÁ EMITIDA POR OUTRA NOTA', 'error');
+    Result := False;
   end;
 end;
 
@@ -1094,6 +1235,7 @@ var
   I: Integer;
   FoiInclusao: Boolean;
   ValoresAntes: array of Variant;
+  NovaCodigo: Integer;
 begin
   // Fiscal validation must precede Post/ApplyUpdates on the inherited dataset.
   if not (sqlMaster.State in [dsInsert, dsEdit]) then Exit;
@@ -1170,6 +1312,7 @@ begin
        if mm.varI_ApplyUpdateErrors > 0 then
          raise Exception.Create('Falha ao gravar o cabeçalho da nota.');
 
+       NovaCodigo := sqlMaster.FindField('CODIGO').AsInteger; // captura para integracao com caixa
 
        // grava demais informações
        try
@@ -1222,6 +1365,11 @@ begin
          end;
        end;
      End;
+
+    // INTEGRACAO CAIXA: abrir tela de pagamento da nota (padrao Sencha)
+    if FoiInclusao and (mm.varI_Caixa > 0) then
+      AbrirPagamentoNota(mm.SQLConn, mm.varI_Code_Company, NovaCodigo, mm.varI_Caixa, mm.varI_User);
+
 
   if  sqlSearchMaster.Active then
     sqlSearchMaster.Refresh;
@@ -2062,6 +2210,8 @@ begin
           end;
 
     Result := Campos.Count = 0;
+    if Result and (sqlMaster.FindField('PEDIDO').AsString <> '') then
+      Result := VerificaOrigemParaEmitir;
     if not Result then
     begin
       Campos.Insert(0, 'Preencha os campos obrigatórios:');
@@ -2567,7 +2717,6 @@ procedure TfrmNOTAELETRONICA.dbgSearchCRUDDblClick(Sender: TObject);
 begin
   if sqlSearchMaster.IsEmpty then Exit;
   inherited;
-  btntransp.Visible := true;
   btncalcreg.Visible := true;
 
 end;
@@ -3158,6 +3307,7 @@ begin
   UniEditinscricao.Text         := '';
   UniEditrenasem.Text           := '';
   UniComboBoxparaop.Clear;
+  UniComboBoxtipoorigem.ItemIndex := 0;
 end;
 
 procedure TfrmNOTAELETRONICA.MemoGravaLog;
@@ -3303,14 +3453,8 @@ begin
   btnCalcReg.Visible := Editando;
   btnCalcReg.Enabled := Editando;
 
-  btntransp.Visible := Editando; // TemNota;
-  btntransp.Enabled := Editando; // TemNota;
-
   btnOptions.Enabled := TemNota;
 
-  btnvendedor.Visible := Acao in [tpIncluir, tpAlterar, tpExcluir, tpListacomRegistros];
-
-//  AjustaBtnVendedor; //reancora o btnvendedor na barra a cada mudanca de estado
 end;
 
 procedure TfrmNOTAELETRONICA.UniButtonDbEditcodigocondicaomestreButtonClick(
@@ -3688,7 +3832,6 @@ begin
   UniDBGridprodutos.Options :=   (UniDBGridprodutos.Options + [dgEditing]) - [dgRowSelect];
   UniDBGridprodutos.ClicksToEdit := 1;
   UniDBGridprodutos.TabKeyBehavior := tkNextColumn;
-  btntransp.Visible := false;
   btnCalcReg.Visible := false;
   SetBut(tpListacomRegistros);
 end;
@@ -4261,86 +4404,8 @@ end;
 //     runtime position) and widens the group panel to avoid clipping.
 
 
-procedure TfrmNOTAELETRONICA.AjustaBtnVendedor;
-var
-  pa : TUniContainerPanel;
-begin
-  if not Assigned(btnvendedor) or not Assigned(btntransp) then Exit;
-
-  pa := TUniContainerPanel(btntransp.Parent);
-
-  btnvendedor.Align     := alNone;
-  btnvendedor.Anchors   := [];
-  btnvendedor.Left      := btntransp.Left + btntransp.Width + 2;
-  btnvendedor.Top       := btntransp.Top;
-  btnvendedor.Width     := btntransp.Width;
-  btnvendedor.Height    := btntransp.Height;
-  btnvendedor.Visible   := True;
-  btnvendedor.BringToFront;
-
-  if pa.Width < (btnvendedor.Left + btnvendedor.Width + 2) then
-     pa.Width := btnvendedor.Left + btnvendedor.Width + 2;
-end;
 
 
-procedure TfrmNOTAELETRONICA.UniFormResize(Sender: TObject);
-begin
-  AjustaBtnVendedor;
-end;
-
-procedure TfrmNOTAELETRONICA.btnvendedorClick(Sender: TObject);
-begin
-  if sqlMaster.FindField('CANCELADA').AsString = 'A' then
-    begin
-      carregaMovimento_comissao(sqlMaster.FindField('NUMERO').AsInteger,
-                                sqlMaster.FindField('DOCUMENTO').AsInteger,
-                                mm.varI_Code_Company);
-      mm.varC_vendedorstatus := 'S';
-
-      FrmMOVIMENTOVENDEDOR.ShowModal();
-
-      if DM_RC.tb_movimentovendedor.RecordCount > 0 then
-        begin
-          executasql('delete from movimento_comissao where numero  = ' + IntToStr(sqlMaster.FindField('NUMERO').AsInteger)    +
-                     '                               and documento = ' + IntToStr(sqlMaster.FindField('DOCUMENTO').AsInteger) +
-                     '                               and empresa   = ' + IntToStr(mm.varI_Code_Company));
-
-          TabelaMovimentoComissao('SELECT * FROM MOVIMENTO_COMISSAO WHERE CODIGO = 0');
-          DM_RC.tb_movimentovendedor.First;
-          while not DM_RC.tb_movimentovendedor.Eof do
-            begin
-              dm_rc.fdqrymovcomissao.Append;
-              dm_rc.fdqrymovcomissao.FindField('KEY').AsString             := Gera_Guid();
-              dm_rc.fdqrymovcomissao.FindField('CODIGO').AsInteger         := Ultimo_Codigo('MOVIMENTO_COMISSAO','CODIGO',True);
-              dm_rc.fdqrymovcomissao.FindField('SEQUENCIA').AsInteger      := DM_RC.tb_movimentovendedor.RecNo;
-              dm_rc.fdqrymovcomissao.FindField('EMPRESA').AsInteger        := mm.varI_Code_Company;
-              dm_rc.fdqrymovcomissao.FindField('DOCUMENTO').AsInteger      := sqlMaster.FindField('DOCUMENTO').AsInteger;
-              dm_rc.fdqrymovcomissao.FindField('NUMERO').AsInteger         := sqlMaster.FindField('NUMERO').AsInteger;
-              dm_rc.fdqrymovcomissao.FindField('FUNCIONARIO').AsInteger    := dm_rc.tb_movimentovendedor.FindField('FUNCIONARIO').AsInteger;
-              dm_rc.fdqrymovcomissao.FindField('NOME').AsString            := dm_rc.tb_movimentovendedor.FindField('NOME').AsString;
-              dm_rc.fdqrymovcomissao.FindField('COMISSAO').AsFloat         := dm_rc.tb_movimentovendedor.FindField('COMISSAO').AsFloat;
-              dm_rc.fdqrymovcomissao.Post;
-
-              dm_rc.tb_movimentovendedor.Next;
-            end;
-        end;
-
-    end
-  else
-    begin
-      if sqlMaster.State in [dsInsert,dsEdit] then
-        mm.varC_vendedorstatus := 'S'
-      else
-        begin
-          carregaMovimento_comissao(sqlMaster.FindField('NUMERO').AsInteger,
-                                    sqlMaster.FindField('DOCUMENTO').AsInteger,
-                                    mm.varI_Code_Company);
-          mm.varC_vendedorstatus := '';
-        end;
-
-      FrmMOVIMENTOVENDEDOR.ShowModal();
-    end;
-end;
 
 initialization
   RegisterClass(TfrmNOTAELETRONICA);
