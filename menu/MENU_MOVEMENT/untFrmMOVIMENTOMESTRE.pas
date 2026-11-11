@@ -151,12 +151,8 @@ type
     UniLabel14: TUniLabel;
     UniLabel16: TUniLabel;
     rcBlock580: TUniContainerPanel;
-    rcBlock600: TUniContainerPanel;
-    UniButtonDbEditvendedor: TUniButtonDbEdit;
-    UniLabel17: TUniLabel;
     rcBlock610: TUniContainerPanel;
     UniLabel19: TUniLabel;
-    UniEditnomevendedor: TUniEdit;
     rcBlock620: TUniContainerPanel;
     UniLabel20: TUniLabel;
     UniDBFormattedNumberEditperccomissao: TUniDBFormattedNumberEdit;
@@ -208,6 +204,7 @@ type
     UniLabel8: TUniLabel;
     edCodigo: TUniDBEdit;
     edLkpCONDICOES: TUniDBEdit;
+    edLkpFUNCIONARIOS: TUniDBEdit;
     procedure btnCalcRegClick(Sender: TObject);
     procedure btnCancelRegClick(Sender: TObject);
     procedure btnDeleteRegClick(Sender: TObject);
@@ -245,8 +242,6 @@ type
       DisplayText: Boolean);
     procedure UniButtonDbEditcodigopessoasButtonClick(Sender: TObject);
     procedure UniButtonDbEditcodigopessoasExit(Sender: TObject);
-    procedure UniButtonDbEditvendedorButtonClick(Sender: TObject);
-    procedure UniButtonDbEditvendedorExit(Sender: TObject);
     procedure UniDBFormattedNumberEditdescontosExit(Sender: TObject);
     procedure UniDBFormattedNumberEditvlrdespesasExit(Sender: TObject);
     procedure UniDBGridprodutosCellClick(Column: TUniDBGridColumn);
@@ -258,6 +253,11 @@ type
     procedure edLkpPESSOASClick(Sender: TObject);
     procedure edLkpPESSOASExit(Sender: TObject);
     procedure edLkpCONDICOESClick(Sender: TObject);
+    procedure UniDBDateTimePickeremissaoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edLkpFUNCIONARIOSClick(Sender: TObject);
+    procedure edLkpCONDICOESKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     FCarregando          : Boolean;
@@ -792,8 +792,8 @@ begin
 
              //TABELA DE MEMORIA DE COMISSAO
              dm_rc.tb_movimentovendedor.Append;
-             dm_rc.tb_movimentovendedor.FindField('FUNCIONARIO').AsInteger := StrToInt(UniButtonDbEditvendedor.Text);
-             dm_rc.tb_movimentovendedor.FindField('NOME').AsString         := Acha_Item('FUNCIONARIOS',UniButtonDbEditvendedor.Text);
+             dm_rc.tb_movimentovendedor.FindField('FUNCIONARIO').AsInteger := StrToInt(sqlMaster.FindField('FUNCIONARIO').AsString);
+//             dm_rc.tb_movimentovendedor.FindField('NOME').AsString         := Acha_Item('FUNCIONARIOS',UniButtonDbEditvendedor.Text);
              dm_rc.tb_movimentovendedor.FindField('COMISSAO').AsFloat      := UniDBFormattedNumberEditperccomissao.Value;
              dm_rc.tb_movimentovendedor.post;
            end
@@ -1417,9 +1417,6 @@ begin
   memprodutos.Close;
   memprodutos.Open;
 
-
-  UniEditnomevendedor.Text      := Acha_Item('FUNCIONARIOS',IntToStr(sqlMaster.FindField('FUNCIONARIO').AsInteger));
-
   if SqlPesquisa('SELECT CODIGO, NOME, CIDADE, ESTADO FROM PESSOAS WHERE CODIGO = ' + IntToStr(sqlMaster.FindField('PESSOA').AsInteger)) then
     begin
 //      UniEditnomepessoa.Text := dm_rc.sqlBuscas.FindField('NOME').AsString;
@@ -1611,8 +1608,6 @@ begin
     end;
 
   varC_Documento_Mvmestre       := sqlMaster.FindField('DOCUMENTO').AsInteger;
-
-  UniEditnomevendedor.Text      := Acha_Item('FUNCIONARIOS',IntToStr(DM_RC.FDQryMvmestre.FindField('FUNCIONARIO').AsInteger));
 
   memprodutos.Close;
   memprodutos.Open;
@@ -1931,6 +1926,32 @@ procedure TfrmMOVIMENTOMESTRE.edLkpCONDICOESClick(Sender: TObject);
 begin
   inherited;
   dm_rc.rc_LookUpSearchFilter( Sender, '', '', 'DESCRICAO;PARCELAS;FORMAPGTO' );
+end;
+
+procedure TfrmMOVIMENTOMESTRE.edLkpCONDICOESKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  CampoCodigo: TComponent;
+begin
+  if (Key = VK_RETURN) and (Shift = []) and
+     (dsMaster.State in [dsEdit, dsInsert]) then
+  begin
+    Key := 0;
+    // O RadCore cria o campo de codigo como <nome do lookup>_CodID.
+    CampoCodigo := FindComponent(LowerCase(edLkpFUNCIONARIOS.Name) + '_CodID');
+    if CampoCodigo is TUniDBEdit then
+      if TUniDBEdit(CampoCodigo).Visible and TUniDBEdit(CampoCodigo).Enabled then
+      begin
+        dm_rc.rc_SetFocus(CampoCodigo);
+        Exit;
+      end;
+    dm_rc.rc_SetFocus(edLkpFUNCIONARIOS);
+  end;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.edLkpFUNCIONARIOSClick(Sender: TObject);
+begin
+  inherited;
+  dm_rc.rc_LookUpSearchFilter( Sender, '', '', 'NOME' );
 end;
 
 procedure TfrmMOVIMENTOMESTRE.edLkpPESSOASClick(Sender: TObject);
@@ -2539,43 +2560,6 @@ begin
     Text := '<span class="badge badge-info">Pago</span>';
 end;
 
-procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditvendedorButtonClick(Sender: TObject);
-begin
-  inherited;
-  mm.Seta_Busca('FUNCIONARIOS');
-  UniFfrmPesquisa.ShowModal(
-  procedure(Sender: TComponent; AResult: Integer)
-   begin
-     if AResult = mrOK then
-     begin
-       sqlMaster.Edit;
-       sqlMaster.FindField('FUNCIONARIO').AsInteger := StrToInt(MM.varC_codigo_busca);
-     end;
-   end);
-end;
-
-procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditvendedorExit(Sender: TObject);
-begin
-  inherited;
-  if ( dsMaster.State in [dsEdit, dsInsert ] ) then
-    begin
-      if (UniButtonDbEditvendedor.Text <> '') and (UniButtonDbEditvendedor.Text <> '0') then
-        begin
-          if SqlPesquisa('SELECT NOME, COMISSAO FROM FUNCIONARIOS WHERE CODIGO = ' + QuotedStr(UniButtonDbEditvendedor.Text)) then
-            begin
-              UniEditnomevendedor.Text                          := dm_rc.sqlBuscas.FindField('NOME').AsString;
-              sqlMaster.FindField('COMISSAOFUNCIONARIO').AsFloat := dm_rc.sqlBuscas.FindField('COMISSAO').AsFloat;
-            end
-          else
-            begin
-              dm_rc.rc_ShowSweetAlert( 'ATENÇÃO', 'VENDEDOR NÃO ENCONTRADO, BUSQUE NOVAMENTE' , 'error' );
-              Abort;
-            end;
-        end;
-    end;
-end;
-
-
 procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditcodigopessoasButtonClick(
   Sender: TObject);
 begin
@@ -2650,6 +2634,27 @@ begin
             end;
         end;
     end;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.UniDBDateTimePickeremissaoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var
+  CampoCodigo: TComponent;
+begin
+  if (Key = VK_RETURN) and (Shift = []) and
+     (dsMaster.State in [dsEdit, dsInsert]) then
+  begin
+    Key := 0;
+    // O RadCore cria o campo de codigo como <nome do lookup>_CodID.
+    CampoCodigo := FindComponent(LowerCase(edLkpCONDICOES.Name) + '_CodID');
+    if CampoCodigo is TUniDBEdit then
+      if TUniDBEdit(CampoCodigo).Visible and TUniDBEdit(CampoCodigo).Enabled then
+      begin
+        dm_rc.rc_SetFocus(CampoCodigo);
+        Exit;
+      end;
+    dm_rc.rc_SetFocus(edLkpCONDICOES);
+  end;
 end;
 
 procedure TfrmMOVIMENTOMESTRE.UniDBFormattedNumberEditdescontosExit(
