@@ -18,9 +18,9 @@ uses
 type
   TAcaoCrud = (tpIncluir, tpAlterar, tpExcluir, tpListaVazia,tpListacomRegistros, tpCalcular);
   TfrmMOVIMENTOMESTRE = class(TfrmBaseCRUD)
-    rcBlock465: TUniContainerPanel;
-    UniLabelTipoDocumento: TUniLabel;
-    UniComboTipoDocumento: TUniComboBox;
+    pnlFiltroTipoDocumento: TUniContainerPanel;
+    lblFiltroTipoDocumento: TUniLabel;
+    cbFiltroTipoDocumento: TUniComboBox;
     FDQryFiltroCODIGO: TIntegerField;
     FDQryFiltroNUMERO: TIntegerField;
     FDQryFiltroEMISSAO: TDateField;
@@ -133,25 +133,13 @@ type
     memprodutosTIPOLOTE: TStringField;
     dsprodutos: TDataSource;
     UniScrollBox2: TUniScrollBox;
-    rcBlock470: TUniContainerPanel;
-    UniComboBoxparaop: TUniComboBox;
-    UniLabel21: TUniLabel;
-    rcBlock480: TUniContainerPanel;
-    UniLabel4: TUniLabel;
-    UniDBDateTimePickeremissao: TUniDBDateTimePicker;
-    rcBlock475: TUniContainerPanel;
-    UniLabel5: TUniLabel;
     rcBlock510: TUniContainerPanel;
     UniEditcidade: TUniEdit;
     UniLabel7: TUniLabel;
     rcBlock520: TUniContainerPanel;
     UniEditestado: TUniEdit;
     UniLabel9: TUniLabel;
-    rcBlock530: TUniContainerPanel;
-    UniButtonDbEditcodigocondicao: TUniButtonDbEdit;
-    UniLabel10: TUniLabel;
     rcBlock540: TUniContainerPanel;
-    UniEditdescricaocondicao: TUniEdit;
     UniLabel11: TUniLabel;
     rcBlock570: TUniContainerPanel;
     UniDBFormattedNumberEditdescontos: TUniDBFormattedNumberEdit;
@@ -203,13 +191,23 @@ type
     L1: TUniMenuItem;
     N6: TUniMenuItem;
     L2: TUniMenuItem;
-    edLkpPESSOAS: TUniDBEdit;
-    rcBlock485: TUniContainerPanel;
-    UniLabel8: TUniLabel;
-    edCodigo: TUniDBEdit;
     UniButtonDbEditcodigopessoas: TUniEdit;
     rcBlock550: TUniContainerPanel;
     UniDBMemoobservacao: TUniDBMemo;
+    rcBlock450: TUniContainerPanel;
+    rcBlock465: TUniContainerPanel;
+    UniLabelTipoDocumento: TUniLabel;
+    UniComboTipoDocumento: TUniComboBox;
+    rcBlock475: TUniContainerPanel;
+    UniLabel5: TUniLabel;
+    edLkpPESSOAS: TUniDBEdit;
+    rcBlock480: TUniContainerPanel;
+    UniLabel4: TUniLabel;
+    UniDBDateTimePickeremissao: TUniDBDateTimePicker;
+    rcBlock485: TUniContainerPanel;
+    UniLabel8: TUniLabel;
+    edCodigo: TUniDBEdit;
+    edLkpCONDICOES: TUniDBEdit;
     procedure btnCalcRegClick(Sender: TObject);
     procedure btnCancelRegClick(Sender: TObject);
     procedure btnDeleteRegClick(Sender: TObject);
@@ -247,8 +245,6 @@ type
       DisplayText: Boolean);
     procedure UniButtonDbEditcodigopessoasButtonClick(Sender: TObject);
     procedure UniButtonDbEditcodigopessoasExit(Sender: TObject);
-    procedure UniButtonDbEditcodigocondicaoButtonClick(Sender: TObject);
-    procedure UniButtonDbEditcodigocondicaoExit(Sender: TObject);
     procedure UniButtonDbEditvendedorButtonClick(Sender: TObject);
     procedure UniButtonDbEditvendedorExit(Sender: TObject);
     procedure UniDBFormattedNumberEditdescontosExit(Sender: TObject);
@@ -258,13 +254,17 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure UniFrameCreate(Sender: TObject);
     procedure UniComboTipoDocumentoChange(Sender: TObject);
+    procedure cbFiltroTipoDocumentoChange(Sender: TObject);
     procedure edLkpPESSOASClick(Sender: TObject);
     procedure edLkpPESSOASExit(Sender: TObject);
+    procedure edLkpCONDICOESClick(Sender: TObject);
   private
     { Private declarations }
     FCarregando          : Boolean;
     posicao_x, posicao_y : Integer;
     function ReservarNumeroDocumento(const Empresa, Documento: Integer): Integer;
+    procedure SalvarParcelasPrevistas;
+    procedure CarregarParcelasPrevistas;
   public
     { Public declarations }
   DocumentoUnificado              : Boolean;
@@ -285,7 +285,6 @@ type
   procedure  Calcula_Documento();
   procedure  ReCalcula_Titulos();
   procedure  Exclui();
-  procedure  CarregaParametros();
   procedure  CarregaMarca();
   procedure  VerificaEdicao();
   function   VerificaSetemFinanceiro():Boolean;
@@ -314,6 +313,86 @@ uses mkm_validate, mkm_funcoes, mkm_func_web, Vcl.Clipbrd, System.DateUtils,
   untFrmTransfereImportacao, untFrmTELAGENERICA, untFrmTRANSPORTADORAMOVIMENTO,
   untFrmBLOQUEIOPESSOA, untFrmPesquisaItensestoque, untFrmPesquisaloteinterno,
   untFrmMOVIMENTOVENDEDOR, untFrmPesquisa,untFrmFINANCEIRONOTA;
+
+procedure TfrmMOVIMENTOMESTRE.cbFiltroTipoDocumentoChange(Sender: TObject);
+var Filtro: string;
+begin
+  case cbFiltroTipoDocumento.ItemIndex of
+    1: Filtro := 'tab.DOCUMENTO = 3';
+    2: Filtro := 'tab.DOCUMENTO = 4';
+    3: Filtro := 'tab.DOCUMENTO = 10';
+  else
+    Filtro := 'tab.DOCUMENTO in (3,4,10)';
+  end;
+  ed_Where_Search.Text := 'tab.EMPRESA = ' + IntToStr(mm.varI_Code_Company) +
+    ' AND ' + Filtro;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.SalvarParcelasPrevistas;
+var Q: TFDQuery;
+begin
+  if not mm.FDTransaction.Active then
+    raise Exception.Create('Transacao inativa ao gravar parcelas previstas.');
+  Q := TFDQuery.Create(nil);
+  try
+    Q.Connection := mm.SQLConn;
+    Q.Transaction := mm.FDTransaction;
+    Q.UpdateTransaction := mm.FDTransaction;
+    Q.SQL.Text := 'delete from PARCELAS_PREVISTAS where MESTRE_ID = :MESTRE';
+    Q.ParamByName('MESTRE').AsInteger := sqlMaster.FieldByName('CODIGO').AsInteger;
+    Q.ExecSQL;
+    Q.SQL.Text := 'insert into PARCELAS_PREVISTAS (CODIGO, MESTRE_ID, SEQUENCIA, VENCIMENTO, VALOR) ' +
+      'values (gen_id(GEN_PARCELAS_PREVISTAS_ID, 1), :MESTRE, :SEQ, :VENC, :VALOR)';
+    tbtitulos.DisableControls;
+    try
+      tbtitulos.First;
+      while not tbtitulos.Eof do
+      begin
+        if tbtitulos.FieldByName('VENCIMENTO').IsNull or
+           (tbtitulos.FieldByName('PARCELA').AsInteger <= 0) or
+           (tbtitulos.FieldByName('VALOR').AsCurrency < 0) then
+          raise Exception.Create('Parcela prevista invalida.');
+        Q.ParamByName('MESTRE').AsInteger := sqlMaster.FieldByName('CODIGO').AsInteger;
+        Q.ParamByName('SEQ').AsInteger := tbtitulos.FieldByName('PARCELA').AsInteger;
+        Q.ParamByName('VENC').AsDate := tbtitulos.FieldByName('VENCIMENTO').AsDateTime;
+        Q.ParamByName('VALOR').AsCurrency := tbtitulos.FieldByName('VALOR').AsCurrency;
+        Q.ExecSQL;
+        tbtitulos.Next;
+      end;
+      tbtitulos.First;
+    finally
+      tbtitulos.EnableControls;
+    end;
+  finally
+    Q.Free;
+  end;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.CarregarParcelasPrevistas;
+var Q: TFDQuery;
+begin
+  Q := TFDQuery.Create(nil);
+  try
+    Q.Connection := mm.SQLConn;
+    Q.SQL.Text := 'select SEQUENCIA, VENCIMENTO, VALOR from PARCELAS_PREVISTAS ' +
+      'where MESTRE_ID = :MESTRE order by SEQUENCIA';
+    Q.ParamByName('MESTRE').AsInteger := sqlMaster.FieldByName('CODIGO').AsInteger;
+    Q.Open;
+    while not Q.Eof do
+    begin
+      tbtitulos.Append;
+      tbtitulos.FieldByName('PARCELA').AsInteger := Q.FieldByName('SEQUENCIA').AsInteger;
+      tbtitulos.FieldByName('VENCIMENTO').AsDateTime := Q.FieldByName('VENCIMENTO').AsDateTime;
+      tbtitulos.FieldByName('VALOR').AsCurrency := Q.FieldByName('VALOR').AsCurrency;
+      tbtitulos.FieldByName('STATUS').AsString := 'Previsto';
+      tbtitulos.Post;
+      Q.Next;
+    end;
+    tbtitulos.First;
+  finally
+    Q.Free;
+  end;
+end;
 
 procedure TfrmMOVIMENTOMESTRE.MostrarTipoDocumento(const Documento: Integer);
 begin
@@ -344,7 +423,6 @@ begin
   sqlMaster.FindField('SERIE').Clear;
   sqlMaster.FindField('OPERACAO').Clear;
   sqlMaster.FindField('CONDICAO').Clear;
-  UniEditdescricaocondicao.Text := '';
   if Documento = 0 then Exit;
   Q := TFDQuery.Create(nil);
   try
@@ -365,11 +443,7 @@ begin
     sqlMaster.FindField('OPERACAO').Value := Q.FieldByName('OPERACAO').Value;
     sqlMaster.FindField('CONDICAO').Value := Q.FieldByName('CONDICAO').Value;
     varC_Documento_Mvmestre := Documento;
-    if not Q.FieldByName('CONDICAO').IsNull then
-      UniEditdescricaocondicao.Text := Acha_Item('CONDICOES', Q.FieldByName('CONDICAO').AsString);
-    UniComboBoxparaop.Enabled := Documento <> 4;
-    if (Documento = 4) and (UniComboBoxparaop.Items.Count > 13) then
-      UniComboBoxparaop.ItemIndex := 13;
+
   finally
     Q.Free;
   end;
@@ -469,7 +543,6 @@ begin
   if not (sqlMaster.State in [dsEdit, dsInsert]) then Exit;
 
   mm.varC_vendedorstatus := '';
-  CarregaParametros();
   CarregaMarca();
   pgBaseCadControl.ActivePage := tabRegister;
 
@@ -520,10 +593,6 @@ begin
   I1.Enabled := False;
   i2.Enabled := False;
 
-  UniComboBoxparaop.Text      := sqlMaster.FindField('PARAMETROOPERACAO').AsString;
-  UniComboBoxparaop.Enabled   := True;
-//  UniButtonDbEditcodigopessoas.SetFocus;
-//  UniButtonDbEditcodigopessoas.SelectAll;
 
 end;
 
@@ -542,16 +611,6 @@ begin
     varC_Documento_Mvmestre := 0;
   end;
   mm.varC_vendedorstatus := '';
-
-  CarregaParametros();
-
-  if varC_Documento_Mvmestre = 4 then
-    begin
-      UniComboBoxparaop.ItemIndex := 13;
-      UniComboBoxparaop.Enabled   := False;
-    end
-  else
-    UniComboBoxparaop.Enabled     := True;
 
   CarregaMarca();
   pgBaseCadControl.ActivePage := tabRegister;
@@ -624,7 +683,6 @@ begin
   dm_rc.tb_movimentovendedor.Close;
   dm_rc.tb_movimentovendedor.Open;
 
-  UniComboBoxparaop.SetFocus;
 
   I4.Enabled := True;
   i2.Enabled := False;
@@ -708,16 +766,10 @@ begin
   if UniButtonDbEditcodigopessoas.Text = '0' then
     begin
       dm_rc.rc_ShowSweetAlert( 'ATENÇÃO', 'INFORME A PESSOA' , 'error' );
-      UniComboBoxparaop.SetFocus;
+      UniButtonDbEditcodigopessoas.SetFocus;
       abort
     end;
 
-  if UniComboBoxparaop.Text = '' then
-    begin
-      dm_rc.rc_ShowSweetAlert( 'ATENÇÃO', 'DEFINA COMO VAI SER A VENDA' , 'error' );
-      UniComboBoxparaop.SetFocus;
-      abort
-    end;
 
   if not (CamposValidados) then
      Abort
@@ -755,7 +807,6 @@ begin
                end;
            end;
 
-         sqlMaster.FindField('PARAMETROOPERACAO').AsString := UniComboBoxparaop.Text;
          if mm.varT_code_tipo_transportadora = '' then
            sqlMaster.FindField('TRAFRETE').AsInteger         := 0;
 
@@ -935,7 +986,7 @@ begin
   tbtitulos.Close;
   tbtitulos.Open;
 
-  if SqlPesquisa('SELECT * FROM CONDICOES WHERE CODIGO = ' + QuotedStr(UniButtonDbEditcodigocondicao.Text)) then
+  if SqlPesquisa('SELECT * FROM CONDICOES WHERE CODIGO = ' + QuotedStr(sqlMaster.FieldByName('CONDICAO').AsString)) then
 
   ORDEM      := 0;
   M_PARCELAS := Explode(TRIM(dm_rc.sqlBuscas.FindField('OBSERVACOES').AsString),',');
@@ -1358,7 +1409,6 @@ begin
     MostrarTipoDocumento(varC_Documento_Mvmestre);
     UniComboTipoDocumento.Enabled := False;
   end;
-  CarregaParametros();
   CarregaMarca();
 
   tbtitulos.Close;
@@ -1367,9 +1417,7 @@ begin
   memprodutos.Close;
   memprodutos.Open;
 
-  UniComboBoxparaop.Enabled     := False;
 
-  UniEditdescricaocondicao.Text := Acha_Item('CONDICOES',IntToStr(sqlMaster.FindField('CONDICAO').AsInteger));
   UniEditnomevendedor.Text      := Acha_Item('FUNCIONARIOS',IntToStr(sqlMaster.FindField('FUNCIONARIO').AsInteger));
 
   if SqlPesquisa('SELECT CODIGO, NOME, CIDADE, ESTADO FROM PESSOAS WHERE CODIGO = ' + IntToStr(sqlMaster.FindField('PESSOA').AsInteger)) then
@@ -1379,6 +1427,10 @@ begin
       UniEditestado.Text     := dm_rc.sqlBuscas.FindField('ESTADO').AsString;
     end;
 
+  if sqlMaster.FieldByName('DOCUMENTO').AsInteger = 10 then
+    CarregarParcelasPrevistas
+  else if sqlMaster.FieldByName('DOCUMENTO').AsInteger = 4 then
+  begin
   SqlPesquisa   ('SELECT FINANCEIRO FROM OPERACOES WHERE CODIGO   = ' + IntToStr(sqlMaster.FindField('OPERACAO').AsInteger));
   if SqlPesquisa(' SELECT SEQUENCIA, VENCIMENTO, SITUACAO, VALORORIGINAL FROM ' + variif(dm_rc.sqlBuscas.FindField('FINANCEIRO').AsInteger = 1,' RECEBER ', ' PAGAR ')+' WHERE NUMERO = ' + IntToStr(sqlMaster.FindField('NUMERO').AsInteger)   +
                  ' AND DOCUMENTO                                                         = ' + IntToStr(sqlMaster.FindField('DOCUMENTO').AsInteger)+
@@ -1400,6 +1452,8 @@ begin
 
       tbtitulos.First;
     end;
+
+  end;
 
   if SqlPesquisa(' SELECT * FROM MVITENS WHERE NUMERO   = ' + IntToStr(sqlMaster.FindField('NUMERO').AsInteger)   +
                  ' AND DOCUMENTO                        = ' + IntToStr(sqlMaster.FindField('DOCUMENTO').AsInteger)+
@@ -1467,7 +1521,6 @@ begin
                             sqlMaster.FindField('DOCUMENTO').AsInteger,
                             mm.varI_Code_Company);
 
-  UniComboBoxparaop.Text          := sqlMaster.FindField('PARAMETROOPERACAO').AsString;
 
   I4.Enabled := False;
   i2.Enabled := True;
@@ -1558,9 +1611,7 @@ begin
     end;
 
   varC_Documento_Mvmestre       := sqlMaster.FindField('DOCUMENTO').AsInteger;
-  UniComboBoxparaop.Text        := dm_rc.FDQryMvmestre.FindField('PARAMETROOPERACAO').AsString;
 
-  UniEditdescricaocondicao.Text := Acha_Item('CONDICOES'   ,IntToStr(DM_RC.FDQryMvmestre.FindField('CONDICAO').AsInteger));
   UniEditnomevendedor.Text      := Acha_Item('FUNCIONARIOS',IntToStr(DM_RC.FDQryMvmestre.FindField('FUNCIONARIO').AsInteger));
 
   memprodutos.Close;
@@ -1797,21 +1848,6 @@ begin
   end;
 end;
 
-procedure TfrmMOVIMENTOMESTRE.CarregaParametros;
-begin
-  UniComboBoxparaop.Clear;
-  if SqlPesquisa('SELECT DESCRICAO FROM PARAMETROSOPERACAO ORDER BY CODIGO') then
-    begin
-      dm_rc.sqlBuscas.First;
-      while not dm_rc.sqlBuscas.Eof do
-        begin
-          UniComboBoxparaop.Items.Add(dm_rc.sqlBuscas.FindField('DESCRICAO').AsString);
-
-          dm_rc.sqlBuscas.Next;
-        end;
-    end;
-end;
-
 procedure TfrmMOVIMENTOMESTRE.carregaprodutos(codigo: string);
 var
   sql:string;
@@ -1890,6 +1926,12 @@ begin
   posicao_y := Y;
 end;
 
+
+procedure TfrmMOVIMENTOMESTRE.edLkpCONDICOESClick(Sender: TObject);
+begin
+  inherited;
+  dm_rc.rc_LookUpSearchFilter( Sender, '', '', 'DESCRICAO;PARCELAS;FORMAPGTO' );
+end;
 
 procedure TfrmMOVIMENTOMESTRE.edLkpPESSOASClick(Sender: TObject);
 begin
@@ -2052,6 +2094,8 @@ begin
   Exclui_Movimento('MVITENS'       ,sqlMaster.FindField('SERIE').AsString,MM.varI_Code_Company,varC_Documento_Mvmestre,sqlMaster.FindField('NUMERO').AsInteger);
   Exclui_Movimento('PONTOS'        ,sqlMaster.FindField('SERIE').AsString,MM.varI_Code_Company,varC_Documento_Mvmestre,sqlMaster.FindField('NUMERO').AsInteger);
 
+  if sqlMaster.FieldByName('DOCUMENTO').AsInteger = 4 then
+  begin
   if varC_verificarecalculofinanceiro = 'S' then
     begin
       executasql(' delete from receber where numero = ' + IntToStr(sqlMaster.FindField('NUMERO').AsInteger) +
@@ -2062,6 +2106,8 @@ begin
     end
   else
     Exclui_Movimento(variif(dm_rc.FDQryoperacoes.FindField('FINANCEIRO').AsInteger = 1,'RECEBER','PAGAR'),sqlMaster.FindField('SERIE').AsString,MM.varI_Code_Company,varC_Documento_Mvmestre,sqlMaster.FindField('NUMERO').AsInteger);
+
+  end;
 
   memprodutos.DisableControls;
   memprodutos.First;
@@ -2126,7 +2172,8 @@ begin
               dm_rc.tbmvitens.Findfield('PESOSACO').AsFloat         := memprodutos.FindField('PESOSACO').AsFloat;
               dm_rc.tbmvitens.Findfield('TIPOLOTE').AsString        := memprodutos.FindField('TIPOLOTE').AsString;
 
-              if memprodutos.FindField('TIPOLOTE').AsString = 'P' then
+              if (sqlMaster.FieldByName('DOCUMENTO').AsInteger = 4) and
+                 (memprodutos.FindField('TIPOLOTE').AsString = 'P') then
                 begin
                   dm_rc.FDQuerymanutencaolote_interno.Append;
                   dm_rc.FDQuerymanutencaolote_interno.Findfield('EMISSAO').AsDateTime        := sqlMaster.FindField('EMISSAO').AsDateTime;
@@ -2169,6 +2216,10 @@ begin
   memprodutos.First;
   memprodutos.EnableControls;
 
+  if sqlMaster.FieldByName('DOCUMENTO').AsInteger = 10 then
+    SalvarParcelasPrevistas;
+  if sqlMaster.FieldByName('DOCUMENTO').AsInteger = 4 then
+  begin
   tbtitulos.DisableControls;
   tbtitulos.First;
   while not tbtitulos.Eof do
@@ -2221,7 +2272,7 @@ begin
 
   tbtitulos.First;
   tbtitulos.EnableControls;
-
+  end;
 
   if DM_RC.tb_movimentovendedor.RecordCount > 0 then
     begin
@@ -2314,9 +2365,7 @@ begin
 //  UniEditnomepessoa.Text           := '';
   UniEditcidade.Text               := '';
   UniEditestado.Text               := '';
-  UniEditdescricaocondicao.Text    := '';
   varC_verificarecalculofinanceiro := '';
-  UniEditdescricaocondicao.Text    := '';
   memprodutos.Close;
   tbtitulos.Close;
 end;
@@ -2400,7 +2449,7 @@ begin
                 ' and empresa                                             = ' + IntToStr(mm.varI_Code_Company)                   +
                 ' and situacao                                            = ' + QuotedStr('Pago');
 
-  SqlPesquisa  ('SELECT * FROM CONDICOES WHERE CODIGO = ' + QuotedStr(UniButtonDbEditcodigocondicao.Text));
+  SqlPesquisa  ('SELECT * FROM CONDICOES WHERE CODIGO = ' + QuotedStr(sqlMaster.FieldByName('CONDICAO').AsString));
   TabelaReceber(sqlreceber); vlratual :=  dm_rc.tbreceber.FindField('VLR').AsFloat;
 
   ORDEM      := 0;
@@ -2526,41 +2575,6 @@ begin
     end;
 end;
 
-procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditcodigocondicaoButtonClick(
-  Sender: TObject);
-begin
-  inherited;
-  mm.Seta_Busca('CONDICOES');
-  UniFfrmPesquisa.ShowModal(
-  procedure(Sender: TComponent; AResult: Integer)
-   begin
-     if AResult = mrOK then
-     begin
-       sqlMaster.Edit;
-       sqlMaster.FindField('CONDICAO').AsInteger := StrToInt(MM.varC_codigo_busca);
-     end;
-   end);
-end;
-
-procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditcodigocondicaoExit(
-  Sender: TObject);
-begin
-  inherited;
-
-  if ( dsMaster.State in [dsEdit, dsInsert ] ) then
-    begin
-      if (UniButtonDbEditcodigocondicao.Text <> '') and (UniButtonDbEditcodigocondicao.Text <> '0') then
-        begin
-          if SqlPesquisa('SELECT * FROM CONDICOES WHERE CODIGO = ' + QuotedStr(UniButtonDbEditcodigocondicao.Text)) then
-            UniEditdescricaocondicao.Text      := dm_rc.sqlBuscas.FindField('DESCRICAO').AsString
-          else
-            begin
-              dm_rc.rc_ShowSweetAlert( 'ATENÇÃO', 'CONDIÇÃO NÃO ENCONTRADA, BUSQUE NOVAMENTE' , 'error' );
-              Abort;
-            end;
-        end;
-    end;
-end;
 
 procedure TfrmMOVIMENTOMESTRE.UniButtonDbEditcodigopessoasButtonClick(
   Sender: TObject);
