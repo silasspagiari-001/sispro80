@@ -1,4 +1,4 @@
-﻿unit untFrmMOVIMENTOMESTRE;
+unit untFrmMOVIMENTOMESTRE;
 
 interface
 
@@ -18,6 +18,9 @@ uses
 type
   TAcaoCrud = (tpIncluir, tpAlterar, tpExcluir, tpListaVazia,tpListacomRegistros, tpCalcular);
   TfrmMOVIMENTOMESTRE = class(TfrmBaseCRUD)
+    rcBlock465: TUniContainerPanel;
+    UniLabelTipoDocumento: TUniLabel;
+    UniComboTipoDocumento: TUniComboBox;
     FDQryFiltroCODIGO: TIntegerField;
     FDQryFiltroNUMERO: TIntegerField;
     FDQryFiltroEMISSAO: TDateField;
@@ -254,19 +257,23 @@ type
     procedure UniDBGridprodutosMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure UniFrameCreate(Sender: TObject);
+    procedure UniComboTipoDocumentoChange(Sender: TObject);
     procedure edLkpPESSOASClick(Sender: TObject);
     procedure edLkpPESSOASExit(Sender: TObject);
   private
     { Private declarations }
     FCarregando          : Boolean;
     posicao_x, posicao_y : Integer;
+    function ReservarNumeroDocumento(const Empresa, Documento: Integer): Integer;
   public
     { Public declarations }
+  DocumentoUnificado              : Boolean;
   iCurrentPage                    : integer;
   varC_Documento_Mvmestre         : Integer;
   varC_verificarecalculofinanceiro: string;
 
   procedure  carregadados();
+  procedure  MostrarTipoDocumento(const Documento: Integer);
   procedure  carregaprodutos(codigo:string);
   procedure  SetBut(Acao:TAcaoCrud);
   procedure  LimpaVars();
@@ -307,6 +314,66 @@ uses mkm_validate, mkm_funcoes, mkm_func_web, Vcl.Clipbrd, System.DateUtils,
   untFrmTransfereImportacao, untFrmTELAGENERICA, untFrmTRANSPORTADORAMOVIMENTO,
   untFrmBLOQUEIOPESSOA, untFrmPesquisaItensestoque, untFrmPesquisaloteinterno,
   untFrmMOVIMENTOVENDEDOR, untFrmPesquisa,untFrmFINANCEIRONOTA;
+
+procedure TfrmMOVIMENTOMESTRE.MostrarTipoDocumento(const Documento: Integer);
+begin
+  case Documento of
+    3: UniComboTipoDocumento.ItemIndex := 0;
+    4: UniComboTipoDocumento.ItemIndex := 1;
+    10: UniComboTipoDocumento.ItemIndex := 2;
+  else
+    UniComboTipoDocumento.ItemIndex := -1;
+  end;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.UniComboTipoDocumentoChange(Sender: TObject);
+var
+  Documento: Integer;
+  Q: TFDQuery;
+begin
+  if not DocumentoUnificado or FCarregando or
+     (sqlMaster.State <> dsInsert) then Exit;
+  case UniComboTipoDocumento.ItemIndex of
+    0: Documento := 3;
+    1: Documento := 4;
+    2: Documento := 10;
+  else
+    Documento := 0;
+  end;
+  sqlMaster.FindField('DOCUMENTO').AsInteger := 0;
+  sqlMaster.FindField('SERIE').Clear;
+  sqlMaster.FindField('OPERACAO').Clear;
+  sqlMaster.FindField('CONDICAO').Clear;
+  UniEditdescricaocondicao.Text := '';
+  if Documento = 0 then Exit;
+  Q := TFDQuery.Create(nil);
+  try
+    Q.Connection := mm.SQLConn;
+    Q.SQL.Text := 'select SERIE, OPERACAO, CONDICAO from DOCUMENTOS ' +
+      'where EMPRESA = :EMPRESA and DOCUMENTO = :DOCUMENTO';
+    Q.ParamByName('EMPRESA').AsInteger := mm.varI_Code_Company;
+    Q.ParamByName('DOCUMENTO').AsInteger := Documento;
+    Q.Open;
+    if Q.IsEmpty then
+    begin
+      dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'Configure o tipo de documento ' +
+        IntToStr(Documento) + ' para esta empresa na tabela DOCUMENTOS.', 'warning');
+      Exit;
+    end;
+    sqlMaster.FindField('DOCUMENTO').AsInteger := Documento;
+    sqlMaster.FindField('SERIE').Value := Q.FieldByName('SERIE').Value;
+    sqlMaster.FindField('OPERACAO').Value := Q.FieldByName('OPERACAO').Value;
+    sqlMaster.FindField('CONDICAO').Value := Q.FieldByName('CONDICAO').Value;
+    varC_Documento_Mvmestre := Documento;
+    if not Q.FieldByName('CONDICAO').IsNull then
+      UniEditdescricaocondicao.Text := Acha_Item('CONDICOES', Q.FieldByName('CONDICAO').AsString);
+    UniComboBoxparaop.Enabled := Documento <> 4;
+    if (Documento = 4) and (UniComboBoxparaop.Items.Count > 13) then
+      UniComboBoxparaop.ItemIndex := 13;
+  finally
+    Q.Free;
+  end;
+end;
 
 procedure TfrmMOVIMENTOMESTRE.btnCalcRegClick(Sender: TObject);
 begin
@@ -355,7 +422,6 @@ begin
 
   I4.Enabled          := False;
   i2.Enabled          := False;
-  btnvendedor.Visible := True;
 
 end;
 
@@ -468,6 +534,13 @@ begin
   inherited;
   if sqlMaster.State <> dsInsert then Exit;
 
+  if DocumentoUnificado then
+  begin
+    FCarregando := True;
+    try UniComboTipoDocumento.ItemIndex := -1; finally FCarregando := False; end;
+    UniComboTipoDocumento.Enabled := True;
+    varC_Documento_Mvmestre := 0;
+  end;
   mm.varC_vendedorstatus := '';
 
   CarregaParametros();
@@ -487,19 +560,24 @@ begin
 
   LimpaVars;
 
-  SqlPesquisa('select operacao,serie, condicao from documentos where documento = ' + IntToStr(varC_Documento_Mvmestre) +
-              'and empresa                                                     = ' + IntToStr(mm.varI_Code_Company));
+  if not DocumentoUnificado then
+    SqlPesquisa('select operacao,serie, condicao from documentos where documento = ' + IntToStr(varC_Documento_Mvmestre) +
+                ' and empresa = ' + IntToStr(mm.varI_Code_Company));
 
    sqlMaster.FindField('PESSOA').AsInteger               := 0;
    sqlMaster.FindField('EMPRESA').AsInteger              := mm.varI_Code_Company;
    sqlMaster.FindField('DOCUMENTO').AsInteger            := varC_Documento_Mvmestre;
    sqlMaster.FindField('NUMERO').AsInteger               := 0;
    sqlMaster.FindField('TRAFRETE').AsInteger             := 0;
-   sqlMaster.FindField('SERIE').AsString                 := dm_rc.sqlBuscas.FindField('SERIE').AsString;
+   if not DocumentoUnificado then
+     sqlMaster.FindField('SERIE').AsString := dm_rc.sqlBuscas.FindField('SERIE').AsString;
    sqlMaster.FindField('EMISSAO').AsDateTime             := Date;
    sqlMaster.FindField('RECEPCAODESPACHO').AsDateTime    := Date;
-   sqlMaster.FindField('OPERACAO').AsString              := dm_rc.sqlBuscas.FindField('OPERACAO').AsString;
-   sqlMaster.FindField('CONDICAO').AsString              := dm_rc.sqlBuscas.FindField('CONDICAO').AsString;
+   if not DocumentoUnificado then
+   begin
+     sqlMaster.FindField('OPERACAO').AsString := dm_rc.sqlBuscas.FindField('OPERACAO').AsString;
+     sqlMaster.FindField('CONDICAO').AsString := dm_rc.sqlBuscas.FindField('CONDICAO').AsString;
+   end;
    sqlMaster.FindField('FUNCIONARIO').AsInteger          := mm.varI_User;
 
    sqlMaster.FindField('VLRDESCONTOS').AsFloat           := 0;
@@ -559,6 +637,36 @@ begin
   UniPopupMenuopcoes.PopupBy( TUniButton( sender ) );
 end;
 
+// Reservar na mesma transacao do cabecalho e dos itens. O UPDATE trava
+// a linha de DOCUMENTOS e RETURNING devolve o valor efetivamente reservado.
+function TfrmMOVIMENTOMESTRE.ReservarNumeroDocumento(
+  const Empresa, Documento: Integer): Integer;
+var
+  Q: TFDQuery;
+begin
+  if not mm.FDTransaction.Active then
+    raise Exception.Create('A transacao do movimento nao esta ativa.');
+  Q := TFDQuery.Create(nil);
+  try
+    Q.Connection := mm.SQLConn;
+    Q.Transaction := mm.FDTransaction;
+    Q.UpdateTransaction := mm.FDTransaction;
+    Q.SQL.Text := 'update DOCUMENTOS set NUMERO = coalesce(NUMERO, 0) + 1 ' +
+      'where EMPRESA = :EMPRESA and DOCUMENTO = :DOCUMENTO returning NUMERO';
+    Q.ParamByName('EMPRESA').AsInteger := Empresa;
+    Q.ParamByName('DOCUMENTO').AsInteger := Documento;
+    Q.Open;
+    if Q.IsEmpty then
+      raise Exception.CreateFmt('Tipo de documento %d nao configurado para a empresa %d.',
+        [Documento, Empresa]);
+    Result := Q.FieldByName('NUMERO').AsInteger;
+    if Result <= 0 then
+      raise Exception.Create('A numeracao do documento e invalida.');
+  finally
+    Q.Free;
+  end;
+end;
+
 procedure TfrmMOVIMENTOMESTRE.btnSaveRegClick(Sender: TObject);
 var
   I         : Integer;
@@ -568,6 +676,11 @@ var
 begin
   // Validation must precede Post/ApplyUpdates on the inherited dataset.
   if not (sqlMaster.State in [dsInsert, dsEdit]) then Exit;
+  if DocumentoUnificado and not (sqlMaster.FindField('DOCUMENTO').AsInteger in [3, 4, 10]) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'Selecione um tipo de documento configurado para a empresa.', 'warning');
+    Exit;
+  end;
   if not rc_FormValidate(Self) then Exit;
   if mm.varC_Locked = 'S' then
   begin
@@ -623,7 +736,7 @@ begin
            begin
              sqlMaster.FindField('KEY').AsString     := Gera_Guid;
              sqlMaster.FindField('CODIGO').AsInteger := Ultimo_Codigo('MVMESTRE','CODIGO',True);
-             sqlMaster.FindField('NUMERO').AsInteger := Ultimo_Numero(mm.varI_Code_Company,varC_Documento_Mvmestre,'GRAVAR');
+             sqlMaster.FindField('NUMERO').AsInteger := ReservarNumeroDocumento(mm.varI_Code_Company, sqlMaster.FindField('DOCUMENTO').AsInteger);
 
              //TABELA DE MEMORIA DE COMISSAO
              dm_rc.tb_movimentovendedor.Append;
@@ -678,7 +791,7 @@ begin
   if sqlSearchMaster.Active then
     begin
       sqlSearchMaster.Refresh;
-      sqlSearchMaster.Locate('NUMERO',sqlMaster.FindField('NUMERO').AsInteger,[]);
+      sqlSearchMaster.Locate('CODIGO',sqlMaster.FindField('CODIGO').AsInteger,[]);
     end;
 
   if sqlSearchMaster.IsEmpty then
@@ -1239,6 +1352,12 @@ end;
 
 procedure TfrmMOVIMENTOMESTRE.carregadados;
 begin
+  if DocumentoUnificado then
+  begin
+    varC_Documento_Mvmestre := sqlMaster.FindField('DOCUMENTO').AsInteger;
+    MostrarTipoDocumento(varC_Documento_Mvmestre);
+    UniComboTipoDocumento.Enabled := False;
+  end;
   CarregaParametros();
   CarregaMarca();
 
@@ -1740,6 +1859,11 @@ begin
 
   if Column.FieldName = 'opcoes' then
     begin
+      if DocumentoUnificado and (FDQryFiltroDOCUMENTO.AsInteger <> 4) then
+      begin
+        dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'As opções específicas de pedido não estão disponíveis para este tipo de documento.', 'warning');
+        Exit;
+      end;
       UniPopupMenudetalhes.Popup(posicao_x-25,posicao_y, dbgSearchCRUD);
     end;
 end;
@@ -1932,6 +2056,8 @@ begin
     begin
       executasql(' delete from receber where numero = ' + IntToStr(sqlMaster.FindField('NUMERO').AsInteger) +
                  ' and serie                        = ' + QuotedStr(sqlMaster.FindField('SERIE').AsString)  +
+                 ' and empresa = ' + IntToStr(mm.varI_Code_Company) +
+                 ' and documento = ' + IntToStr(sqlMaster.FindField('DOCUMENTO').AsInteger) +
                  ' and situacao                     = ' + QuotedStr('Aberto'));
     end
   else
@@ -2204,6 +2330,9 @@ end;
 procedure TfrmMOVIMENTOMESTRE.memprodutosAfterPost(DataSet: TDataSet);
 begin
   inherited;
+  if DocumentoUnificado and (sqlMaster.State = dsInsert) and
+     (DataSet.FindField('PRODUTO').AsInteger > 0) then
+    UniComboTipoDocumento.Enabled := False;
   Calcula_Totais();
 end;
 
@@ -2216,6 +2345,13 @@ end;
 procedure TfrmMOVIMENTOMESTRE.memprodutosBeforePost(DataSet: TDataSet);
 begin
   inherited;
+  if DocumentoUnificado and (sqlMaster.State = dsInsert) and
+     (DataSet.FindField('PRODUTO').AsInteger > 0) and
+     not (sqlMaster.FindField('DOCUMENTO').AsInteger in [3, 4, 10]) then
+  begin
+    dm_rc.rc_ShowSweetAlert('ATENÇÃO', 'Selecione o tipo de documento antes de adicionar itens.', 'warning');
+    Abort;
+  end;
   gravamemoria();
 end;
 
@@ -2328,14 +2464,9 @@ begin
   btnCalcReg.Visible := Editando;
   btnCalcReg.Enabled := Editando;
 
-  btntransp.Visible := Editando;
-  btntransp.Enabled := Editando;
-
   btnOptions.Enabled := TemRegistro;
 
-  //[PT] btnvendedor herdado do untFrmBaseCRUD (posicionado pelo render da base)
-  if Assigned(btnvendedor) then
-     btnvendedor.Visible := Acao in [tpIncluir, tpAlterar, tpExcluir, tpListacomRegistros];
+
 end;
 
 procedure TfrmMOVIMENTOMESTRE.sqlMasterAfterOpen(DataSet: TDataSet);
@@ -2573,8 +2704,18 @@ begin
 end;
 
 procedure TfrmMOVIMENTOMESTRE.UniFrameCreate(Sender: TObject);
+var DocumentoFiltro: string;
 begin
+
+  DocumentoUnificado := true;
+
+  if DocumentoUnificado then
+    DocumentoFiltro := 'tab.DOCUMENTO in (3,4,10)'
+  else
+    DocumentoFiltro := 'tab.DOCUMENTO = ' + IntToStr(varC_Documento_Mvmestre);
   FCarregando := False;
+  rcBlock465.Visible := DocumentoUnificado;
+  UniComboTipoDocumento.Enabled := False;
 
   mm.varC_Table_Search     := 'mvmestre';
   mm.varC_PK_MasterTable   := 'CODIGO';
@@ -2584,14 +2725,14 @@ begin
     ' SELECT tab.* FROM MVMESTRE tab ' +
     ' WHERE tab.[[pk]] = :table_pk ' +
     ' AND tab.EMPRESA = ' + IntToStr(mm.varI_Code_Company) +
-    ' AND tab.DOCUMENTO = ' + IntToStr(varC_Documento_Mvmestre) +
+    ' AND ' + DocumentoFiltro +
     ' [grid] SELECT ' +
     ' tab."KEY", tab.EMPRESA, tab.DOCUMENTO, tab.CODIGO, ' +
     ' tab.NUMERO, tab.EMISSAO, tab.SERIE, tab.CANCELADA, tab.PESSOA, ' +
     ' p.CIDADE, p.ESTADO, p.NOME, tab.FECHAMENTO_STATUS, tab.VLRTOTAL ' +
     ' FROM MVMESTRE tab LEFT JOIN PESSOAS p ON p.CODIGO = tab.PESSOA ';
 
-  ed_Where_Search.Text := 'tab.EMPRESA = ' + IntToStr(mm.varI_Code_Company) + ' AND tab.DOCUMENTO = ' + IntToStr(varC_Documento_Mvmestre);
+  ed_Where_Search.Text := 'tab.EMPRESA = ' + IntToStr(mm.varI_Code_Company) + ' AND ' + DocumentoFiltro;
   ed_Order_Search.Text := 'tab.NUMERO';
 
   dbgSearchCRUD.Hint := '[[' +
@@ -2606,6 +2747,11 @@ begin
   inherited;
   ed_NoGenID.Text          := 'true';
   ed_GenNextID_OnNew.Text  := 'false';
+
+//  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField0.Name,'tab.DOCUMENTO', 'ORCAMENTO');
+//  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField0.Name,'tab.DOCUMENTO', 'PEDIDO');
+//  dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField0.Name,'tab.DOCUMENTO', 'NOTA');
+
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name,'tab.NUMERO', 'NUMERO');
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name,'p.NOME', 'PESSOA');
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name,'tab.PESSOA', 'CODIGO DA PESSOA');
@@ -2613,7 +2759,10 @@ begin
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name,'tab.CANCELADA', 'SITUACAO (A/C)');
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDField1.Name,'tab.FECHAMENTO_STATUS', 'FECHAMENTO');
 
-  labTitleForm.Caption := 'MOVIMENTO MESTRE';
+  if DocumentoUnificado then
+    labTitleForm.Caption := 'ORÇAMENTO / PEDIDO / REQUISIÇÃO'
+  else
+    labTitleForm.Caption := 'MOVIMENTO MESTRE';
 
   btnSearchCRUDClick(Self);
 
@@ -2621,12 +2770,8 @@ begin
   UniDBGridprodutos.ClicksToEdit   := 1;
   UniDBGridprodutos.TabKeyBehavior := tkNextColumn;
 
-  btntransp.Visible  := false;
   btnCalcReg.Visible := false;
 
-  //[PT] btnvendedor herdado da base: religa o handler de negocio
-  if Assigned(btnvendedor) then
-     btnvendedor.OnClick := btnvendedorClick;
 
   SetBut(tpListacomRegistros);
 end;
