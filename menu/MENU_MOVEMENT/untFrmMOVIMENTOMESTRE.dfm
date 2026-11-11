@@ -84,27 +84,14 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
             'k|'#13#10'hint:Calcula t:Calcula w:200 d:10000 c:rc-bg-info'#13#10']]'
           OnClick = btnCalcRegClick
         end
-        inherited btntransp: TUniBitBtn
-          Hint = 
-            '[['#13#10'cls:ButtonWhite | '#13#10'ico:fa-truck | '#13#10'cls-ico:font-black|'#13#10'hi' +
-            'nt:Endere'#231'o de Entrega t:Entrega w:200 d:10000 c:rc-bg-info'#13#10']]'
-          OnClick = btntranspClick
-        end
       end
     end
     inherited paBaseCadControl: TUniContainerPanel
       inherited pgBaseCadControl: TUniPageControl
         inherited tabSearch: TUniTabSheet
-          ExplicitTop = 24
-          ExplicitHeight = 965
           inherited paBaseRegSearch: TUniContainerPanel
-            Height = 965
-            ExplicitHeight = 965
             inherited paGridOffset: TUniContainerPanel
-              Height = 957
-              ExplicitHeight = 957
               inherited dbgSearchCRUD: TUniDBGrid
-                Height = 957
                 ForceFit = True
                 Font.Height = -13
                 Columns = <
@@ -123,6 +110,13 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                     Width = 117
                     Font.Name = 'Calibri'
                     Alignment = taCenter
+                  end
+                  item
+                    Flex = 90
+                    FieldName = 'DOCUMENTO'
+                    Title.Caption = 'TIPO'
+                    Width = 90
+                    Font.Name = 'Calibri'
                   end
                   item
                     Flex = 100
@@ -181,10 +175,6 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
           end
         end
         inherited tabRegister: TUniTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 24
-          ExplicitWidth = 1361
-          ExplicitHeight = 965
           inherited paBaseRegData1: TUniContainerPanel
             ScrollHeight = 965
             ScrollWidth = 1361
@@ -199,13 +189,53 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
               Margins.Right = 15
               Align = alClient
               TabOrder = 0
-              ExplicitLeft = 3
-              ExplicitWidth = 1355
               DesignSize = (
                 1329
                 957)
               ScrollHeight = 714
               ScrollWidth = 946
+              object rcBlock465: TUniContainerPanel
+                Left = 3
+                Top = 0
+                Width = 300
+                Height = 48
+                Hint = '[[cols:xs-12 sm-12 md-12]]'
+                Visible = False
+                ParentColor = False
+                TabOrder = 18
+                DesignSize = (
+                  300
+                  48)
+                object UniLabelTipoDocumento: TUniLabel
+                  Left = 0
+                  Top = 0
+                  Width = 105
+                  Height = 15
+                  Hint = ''
+                  Caption = 'Tipo de Documento'
+                  ParentFont = False
+                  Font.Height = -13
+                  Font.Name = 'Calibri'
+                  TabOrder = 0
+                end
+                object UniComboTipoDocumento: TUniComboBox
+                  Left = 0
+                  Top = 18
+                  Width = 300
+                  Height = 29
+                  Hint = ''
+                  Style = csDropDownList
+                  Text = ''
+                  Items.Strings = (
+                    'Or'#231'amento'
+                    'Pedido'
+                    'Requisi'#231#227'o')
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 1
+                  IconItems = <>
+                  OnChange = UniComboTipoDocumentoChange
+                end
+              end
               object rcBlock475: TUniContainerPanel
                 Tag = 1
                 Left = 258
@@ -216,7 +246,6 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 ParentColor = False
                 Anchors = [akLeft, akTop, akRight]
                 TabOrder = 2
-                ExplicitWidth = 265
                 DesignSize = (
                   241
                   48)
@@ -1180,7 +1209,6 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 Anchors = [akLeft, akTop, akRight]
                 TabOrder = 16
                 ReadOnly = True
-                ExplicitWidth = 79
               end
               object rcBlock550: TUniContainerPanel
                 Tag = 1
@@ -1214,9 +1242,51 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
         end
       end
       inherited paSearchFilters: TUniPanel
+        Top = -2
+        Height = 475
+        ExplicitTop = -2
+        ExplicitHeight = 475
         inherited UniScrollBox1: TUniScrollBox
+          Top = 42
+          ExplicitTop = 42
           ScrollHeight = 746
           ScrollWidth = 164
+          inherited paSearchFilter1: TUniContainerPanel
+            Height = 177
+            ExplicitHeight = 177
+            inherited paSearchOp1: TUniContainerPanel
+              Top = 108
+              ExplicitTop = 108
+            end
+            inherited paSearchField1: TUniContainerPanel
+              Top = 32
+              Height = 68
+              ExplicitTop = 32
+              ExplicitHeight = 68
+              inherited cbxSearchCRUDField1_Fields: TUniComboBox
+                Left = 164
+                Top = 3
+                ExplicitLeft = 164
+                ExplicitTop = 3
+              end
+            end
+          end
+          inherited paSearchContent1: TUniContainerPanel
+            Left = 10
+            Top = 224
+            ExplicitLeft = 10
+            ExplicitTop = 224
+          end
+          inherited paSearchFilter2: TUniContainerPanel
+            inherited paSearchField2: TUniContainerPanel
+              inherited cbxSearchCRUDField2_Fields: TUniComboBox
+                Left = 201
+                Top = -7
+                ExplicitLeft = 201
+                ExplicitTop = -7
+              end
+            end
+          end
           inherited paSearchBtn: TUniContainerPanel
             inherited btnSearchCRUD: TUniBitBtn
               ScreenMask.Target = Owner
@@ -1240,7 +1310,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
     Top = 23
   end
   inherited dsSearchMaster: TDataSource
-    Left = 1012
+    Left = 964
     Top = 15
   end
   inherited sqlSearchMaster: TFDQuery
@@ -1364,7 +1434,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
     Top = 34
   end
   inherited FDSchemaAdapter1: TFDSchemaAdapter
-    Left = 950
+    Left = 910
     Top = 22
   end
   object UniPopupMenudetalhes: TUniPopupMenu
