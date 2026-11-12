@@ -89,9 +89,16 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
     inherited paBaseCadControl: TUniContainerPanel
       inherited pgBaseCadControl: TUniPageControl
         inherited tabSearch: TUniTabSheet
+          ExplicitTop = 24
+          ExplicitHeight = 965
           inherited paBaseRegSearch: TUniContainerPanel
+            Height = 965
+            ExplicitHeight = 965
             inherited paGridOffset: TUniContainerPanel
+              Height = 957
+              ExplicitHeight = 957
               inherited dbgSearchCRUD: TUniDBGrid
+                Height = 957
                 ForceFit = True
                 Font.Height = -13
                 Columns = <
@@ -175,6 +182,10 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
           end
         end
         inherited tabRegister: TUniTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 24
+          ExplicitWidth = 1361
+          ExplicitHeight = 965
           inherited paBaseRegData1: TUniContainerPanel
             AutoScroll = False
             object UniScrollBox2: TUniScrollBox
@@ -308,12 +319,13 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                 object edLkpCONDICOES: TUniDBEdit
                   Left = 2
                   Top = 19
-                  Width = 263
+                  Width = 255
                   Height = 29
                   Hint = 
                     '[['#13#10'DESCRICAO CONDICAO @60 |'#13#10'lkpfilter-empty:Selecione um Pagam' +
                     'ento<translate>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'val' +
                     'id:blank |'#13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
+                  Enabled = False
                   CharCase = ecUpperCase
                   Anchors = [akLeft, akTop, akRight]
                   ParentFont = False
@@ -488,6 +500,7 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                       '[['#13#10'NOME FUNCIONARIO @60 |'#13#10'lkpfilter-empty:Selecione um Pagamen' +
                       'to<translate>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'valid' +
                       ':blank |'#13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
+                    Enabled = False
                     CharCase = ecUpperCase
                     Anchors = [akLeft, akTop, akRight]
                     ParentFont = False
@@ -1000,7 +1013,6 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                     TabOrder = 1
                     IconItems = <>
                     OnChange = UniComboTipoDocumentoChange
-                    ExplicitWidth = 300
                   end
                 end
                 object rcBlock475: TUniContainerPanel
@@ -1034,9 +1046,9 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                     Width = 236
                     Height = 29
                     Hint = 
-                      '[['#13#10'NOME PESSOA @60 |'#13#10'lkpfilter-empty:Selecione uma Pessoa<tran' +
-                      'slate>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'valid:blank ' +
-                      '|'#13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
+                      '[['#13#10'NOME PESSOA @60|'#13#10'lkpfilter-empty:Selecione uma Pessoa<trans' +
+                      'late>|'#13#10'lkpfilter-order: |'#13#10'lkpfilter-gridattr: |'#13#10'valid:blank |' +
+                      #13#10'valid-required:top-in |'#13#10']]'#13#10#13#10
                     CharCase = ecUpperCase
                     Anchors = [akLeft, akTop, akRight]
                     ParentFont = False
@@ -1044,7 +1056,6 @@ inherited frmMOVIMENTOMESTRE: TfrmMOVIMENTOMESTRE
                     Font.Name = 'Calibri'
                     TabOrder = 2
                     Color = clInfoBk
-                    ReadOnly = True
                     InputType = 'text'
                     OnClick = edLkpPESSOASClick
                     OnExit = edLkpPESSOASExit
