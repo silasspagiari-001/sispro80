@@ -262,9 +262,17 @@ type
     { Private declarations }
     FCarregando          : Boolean;
     posicao_x, posicao_y : Integer;
+    FAvancarCondicao: Boolean;
+    FExitCodigoCondicoes: TNotifyEvent;
+    FExitCodigoPessoa: TNotifyEvent;
+    FAlertaCodigoPessoa: Boolean;
+    FEnterCodigoPessoa: TNotifyEvent;
+    procedure CodigoCondicoesExit(Sender: TObject);
     function ReservarNumeroDocumento(const Empresa, Documento: Integer): Integer;
     procedure SalvarParcelasPrevistas;
     procedure CarregarParcelasPrevistas;
+    procedure CodigoPessoaExit(Sender: TObject);
+    procedure CodigoPessoaEnter(Sender: TObject);
   public
     { Public declarations }
   DocumentoUnificado              : Boolean;
@@ -599,6 +607,7 @@ end;
 procedure TfrmMOVIMENTOMESTRE.btnNewRegClick(Sender: TObject);
 var
   S, R: Integer;
+  CampoCodigo: TComponent;
 begin
   inherited;
   if sqlMaster.State <> dsInsert then Exit;
@@ -686,6 +695,9 @@ begin
 
   I4.Enabled := True;
   i2.Enabled := False;
+
+  CampoCodigo := FindComponent(LowerCase(edLkpPESSOAS.Name) + '_CodID');
+  dm_rc.rc_SetFocus(CampoCodigo);
 
 end;
 
@@ -1929,23 +1941,40 @@ begin
 end;
 
 procedure TfrmMOVIMENTOMESTRE.edLkpCONDICOESKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-  CampoCodigo: TComponent;
 begin
   if (Key = VK_RETURN) and (Shift = []) and
      (dsMaster.State in [dsEdit, dsInsert]) then
   begin
     Key := 0;
-    // O RadCore cria o campo de codigo como <nome do lookup>_CodID.
+    if Sender = FindComponent(LowerCase(edLkpCONDICOES.Name) + '_CodID') then
+    begin
+      FAvancarCondicao := True;
+      // A saida do codigo executa a validacao original do RadCore.
+      edLkpCONDICOES.SetFocus;
+    end;
+  end;
+end;
+
+procedure TfrmMOVIMENTOMESTRE.CodigoCondicoesExit(Sender: TObject);
+var
+  Avancar: Boolean;
+  CampoCodigo: TComponent;
+begin
+  Avancar := FAvancarCondicao;
+  FAvancarCondicao := False;
+  if Assigned(FExitCodigoCondicoes) then
+    FExitCodigoCondicoes(Sender);
+  // Agenda depois da validacao, que tambem pode solicitar foco no lookup.
+  if Avancar and (Trim(edLkpCONDICOES.Text) <> '') and
+     (dsMaster.State in [dsEdit, dsInsert]) then
+  begin
     CampoCodigo := FindComponent(LowerCase(edLkpFUNCIONARIOS.Name) + '_CodID');
     if CampoCodigo is TUniDBEdit then
       if TUniDBEdit(CampoCodigo).Visible and TUniDBEdit(CampoCodigo).Enabled then
-      begin
-        dm_rc.rc_SetFocus(CampoCodigo);
-        Exit;
-      end;
-    dm_rc.rc_SetFocus(edLkpFUNCIONARIOS);
-  end;
+        begin
+          dm_rc.rc_SetFocus(CampoCodigo);
+        end;
+    end;
 end;
 
 procedure TfrmMOVIMENTOMESTRE.edLkpFUNCIONARIOSClick(Sender: TObject);
@@ -2650,6 +2679,7 @@ begin
     if CampoCodigo is TUniDBEdit then
       if TUniDBEdit(CampoCodigo).Visible and TUniDBEdit(CampoCodigo).Enabled then
       begin
+        TUniDBEdit(CampoCodigo).SelectOnFocus := true;
         dm_rc.rc_SetFocus(CampoCodigo);
         Exit;
       end;
@@ -2723,7 +2753,10 @@ begin
 end;
 
 procedure TfrmMOVIMENTOMESTRE.UniFrameCreate(Sender: TObject);
-var DocumentoFiltro: string;
+var
+  DocumentoFiltro: string;
+  CampoCodigoCondicoes: TComponent;
+  CampoCodigoPessoa: TComponent;
 begin
 
   DocumentoUnificado := true;
@@ -2764,6 +2797,27 @@ begin
 
   dm_rc.rc_FillSearchFieldsCRUD(Self, cbxSearchCRUDFieldDate.Name, 'tab.EMISSAO', 'EMISSAO');
   inherited;
+
+  CampoCodigoPessoa := FindComponent(LowerCase(edLkpPESSOAS.Name) + '_CodID');
+
+  if CampoCodigoPessoa is TUniDBEdit then
+  begin
+    FExitCodigoPessoa := TUniDBEdit(CampoCodigoPessoa).OnExit;
+    TUniDBEdit(CampoCodigoPessoa).OnExit := CodigoPessoaExit;
+
+    FEnterCodigoPessoa := TUniDBEdit(CampoCodigoPessoa).OnEnter;
+    TUniDBEdit(CampoCodigoPessoa).OnEnter := CodigoPessoaEnter;
+  end;
+
+  // O inherited cria os campos de codigo dos lookups pelo RadCore.
+  // Vincula apenas o teclado; preserva o OnExit de validacao do RadCore.
+  CampoCodigoCondicoes := FindComponent(LowerCase(edLkpCONDICOES.Name) + '_CodID');
+  if CampoCodigoCondicoes is TUniDBEdit then
+  begin
+    FExitCodigoCondicoes := TUniDBEdit(CampoCodigoCondicoes).OnExit;
+    TUniDBEdit(CampoCodigoCondicoes).OnExit := CodigoCondicoesExit;
+    TUniDBEdit(CampoCodigoCondicoes).OnKeyDown := edLkpCONDICOESKeyDown;
+  end;
   ed_NoGenID.Text          := 'true';
   ed_GenNextID_OnNew.Text  := 'false';
 
@@ -2826,5 +2880,56 @@ begin
     Result := False;
 
 end;
+
+procedure TfrmMOVIMENTOMESTRE.CodigoPessoaEnter(Sender: TObject);
+begin
+  FAlertaCodigoPessoa := False;
+
+  if Assigned(FEnterCodigoPessoa) then
+    FEnterCodigoPessoa(Sender);
+end;
+
+procedure TfrmMOVIMENTOMESTRE.CodigoPessoaExit(Sender: TObject);
+var
+  Codigo: Integer;
+  TextoCodigo: string;
+begin
+  if not (Sender is TUniDBEdit) then
+    Exit;
+
+  if not (dsMaster.State in [dsEdit, dsInsert]) then
+  begin
+    if Assigned(FExitCodigoPessoa) then
+      FExitCodigoPessoa(Sender);
+    Exit;
+  end;
+
+  TextoCodigo := Trim(TUniDBEdit(Sender).Text);
+
+  if not TryStrToInt(TextoCodigo, Codigo) or (Codigo <= 0) then
+  begin
+    UniLabel5.Caption := 'Pessoa - informe um código válido';
+    UniLabel5.Font.Color := clRed;
+    dm_rc.rc_SetFocus(Sender);
+    Exit;
+  end;
+
+  if not SqlPesquisa(
+    'SELECT CODIGO FROM PESSOAS WHERE CODIGO = ' + IntToStr(Codigo)
+  ) then
+  begin
+    UniLabel5.Caption := 'Pessoa - código não encontrado';
+    UniLabel5.Font.Color := clRed;
+    dm_rc.rc_SetFocus(Sender);
+    Exit;
+  end;
+
+  UniLabel5.Caption := 'Pessoa';
+  UniLabel5.Font.Color := clBlack;
+
+  if Assigned(FExitCodigoPessoa) then
+    FExitCodigoPessoa(Sender);
+end;
+
 
 end.
